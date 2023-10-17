@@ -32,6 +32,16 @@
           }
         ];
       };
+      Mochizuki = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/general.nix
+          ./cachix
+          ./hosts/Mochizuki/configuration.nix
+          ./hosts/Mochizuki/hardware-configuration.nix
+          home-manager.nixosModules.home-manager
+        ];
+      };
       ShirosuzuGakuen = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         modules = [
