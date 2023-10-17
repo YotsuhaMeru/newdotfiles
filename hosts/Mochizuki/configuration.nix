@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 
 {
-  networking.hostName = "Folkroll"; # Define your hostname.
+  networking.hostName = "Mochizuki"; # Define your hostname.
 
   # Configure keymap in X11
   services.xserver = {
@@ -19,6 +19,7 @@
   services.xserver.displayManager.gdm.enable = true;
   services.xserver.desktopManager.gnome.enable = true;
 
+  hardware.pulseaudio.enable = false;
   services.pipewire = {
     enable = true;
     audio.enable = true;
@@ -26,6 +27,10 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
+
+  environment.systemPackages = with pkgs; [
+    firefox
+  ];
 
   users.users.kaguya = {
     isNormalUser = true;
