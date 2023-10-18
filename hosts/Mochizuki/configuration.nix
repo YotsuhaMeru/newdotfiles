@@ -15,8 +15,11 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
+  services.xserver.displayManager.gdm.autoSuspend = false;
+  programs.hyprland.nvidiaPatches = true;
+
   # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
+  services.xserver.displayManager.gdm.enable = false;
   services.xserver.desktopManager.gnome.enable = true;
 
   hardware.pulseaudio.enable = false;
