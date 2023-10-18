@@ -42,7 +42,7 @@
     "home-manager-unstable": {
       "inputs": {
         "nixpkgs": [
-          "nixpkgs"
+          "nixos-unstable"
         ]
       },
       "locked": {

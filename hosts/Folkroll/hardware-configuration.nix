@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   # Bootloader.
@@ -15,25 +16,26 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-    boot.kernelPackages = pkgs.linuxPackages_latest;
-    
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   boot.extraModprobeConfig = ''
     options snd slots=snd-hda-intel
   '';
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/2f57a18e-ef09-46f5-a271-95f3b4595c8a";
+    {
+      device = "/dev/disk/by-uuid/2f57a18e-ef09-46f5-a271-95f3b4595c8a";
       fsType = "xfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/942E-4BC7";
+    {
+      device = "/dev/disk/by-uuid/942E-4BC7";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/4d538c4d-9ca3-452e-9e64-026efd9e57d8"; }
-    ];
+    [{ device = "/dev/disk/by-uuid/4d538c4d-9ca3-452e-9e64-026efd9e57d8"; }];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -42,7 +44,7 @@
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.enp0s31f6.useDHCP = lib.mkDefault true;
 
-  hardware.enableAllFirmware = true;  
+  hardware.enableAllFirmware = true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";

@@ -1,4 +1,4 @@
-{config, pkgs, ...}:
+{ config, pkgs, ... }:
 
 {
 
@@ -12,7 +12,7 @@
         enableACME = true;
         root = "/var/www/cafe-setaria.com";
       };
-      "eewservlet.cafe-setaria.com" = {   
+      "eewservlet.cafe-setaria.com" = {
         enableACME = true;
         forceSSL = true;
         locations."/" = {

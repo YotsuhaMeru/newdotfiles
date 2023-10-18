@@ -1,4 +1,4 @@
-{ config, pkgs, ...}:
+{ config, pkgs, ... }:
 
 {
   home = {
@@ -14,7 +14,7 @@
       monitor = ,1366x768@60,auto,auto
     '';
   };
-  
+
   home.stateVersion = "23.05";
   programs.home-manager.enable = true;
 }

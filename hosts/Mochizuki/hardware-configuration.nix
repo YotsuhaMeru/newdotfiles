@@ -5,7 +5,8 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [
+      (modulesPath + "/installer/scan/not-detected.nix")
     ];
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -17,17 +18,19 @@
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/5a50e919-dc1e-4d89-be5b-0b0458f4fee7";
+    {
+      device = "/dev/disk/by-uuid/5a50e919-dc1e-4d89-be5b-0b0458f4fee7";
       fsType = "xfs";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/5F2A-739B";
+    {
+      device = "/dev/disk/by-uuid/5F2A-739B";
       fsType = "vfat";
     };
 
-  swapDevices = [ 
-    { device = "/dev/disk/by-uuid/f80b8840-b6af-4b3f-9967-da937ecf71bc";}
+  swapDevices = [
+    { device = "/dev/disk/by-uuid/f80b8840-b6af-4b3f-9967-da937ecf71bc"; }
   ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking

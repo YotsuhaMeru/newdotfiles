@@ -21,12 +21,12 @@
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPEN4dIHBHXEpMJN954xil+8lPbcoFqWO5dVFnLVwzZ2"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJvm29aFb1vnetFE991RDzawghS1T96ohKL6JlcxDo8V"
     ];
-    packages = with pkgs; [];
+    packages = with pkgs; [ ];
   };
 
-  
-  
-  nix.settings.trusted-users = ["ichika" "kori"];
+
+
+  nix.settings.trusted-users = [ "ichika" "kori" ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -37,12 +37,12 @@
     gnumake
     gcc
     ffmpeg
-    libuuid 
+    libuuid
   ];
 
   environment = {
     sessionVariables = {
-      LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [pkgs.libuuid];
+      LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [ pkgs.libuuid ];
     };
   };
 
@@ -77,7 +77,7 @@
   services.cockpit = {
     enable = true;
   };
-  
+
   services.samba-wsdd.enable = true;
   services.samba = {
     enable = true;

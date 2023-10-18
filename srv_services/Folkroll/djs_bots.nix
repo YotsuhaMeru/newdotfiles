@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{ pkgs, ... }:
 {
   # Razubot
   systemd.services.RazuBot = {
@@ -11,10 +11,10 @@
       ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/RazuBot-1/index.js";
       Restart = "always";
       KillMode = "process";
-    }; 
+    };
     wantedBy = [ "multi-user.target" ];
   };
-  
+
   systemd.services.MusicBot = {
     enable = true;
     description = "Discord bots(MusicBot)";
@@ -43,7 +43,7 @@
     };
     wantedBy = [ "multi-user.target" ];
   };
-  
+
   systemd.services.eewBot = {
     enable = true;
     description = "Discord bots(eewBot)";
@@ -57,7 +57,7 @@
     };
     wantedBy = [ "multi-user.target" ];
   };
-  
+
   systemd.services.gomamayoBot = {
     enable = false;
     description = "Discord bots(gomamayoBot)";
@@ -70,7 +70,7 @@
       KillMode = "process";
     };
     wantedBy = [ "multi-user.target" ];
-  }; 
+  };
 
   systemd.services.GraybotCanary = {
     enable = true;
@@ -84,5 +84,5 @@
       KillMode = "process";
     };
     wantedBy = [ "multi-user.target" ];
-  }; 
+  };
 }

@@ -7,17 +7,17 @@
     nixos-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     hyprland.url = "github:hyprwm/Hyprland";
     home-manager = {
-        url = "github:nix-community/home-manager/release-23.05";
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager/release-23.05";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager-unstable = {
-        url = "github:nix-community/home-manager";
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "/nixos-unstable";
     };
     nur.url = "github:nix-community/nur";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixos-flake.url = "github:srid/nixos-flake";
-  };  
+  };
 
   outputs = inputs@{ self, ... }:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
@@ -30,10 +30,10 @@
         {
           nixosConfigurations = {
             Folkroll = self.nixos-flake.lib.mkLinuxSystem {
-              nixpkgs.hostPlatform = "x86_64-linux"; 
+              nixpkgs.hostPlatform = "x86_64-linux";
               imports = [
+                self.nixosModules.common
                 ./hosts/general.nix
-                ./cachix
                 ./hosts/Folkroll/configuration.nix
                 ./hosts/Folkroll/hardware-configuration.nix
                 ./srv_services/Folkroll
@@ -41,59 +41,93 @@
                 inputs.home-manager.nixosModules.home-manager
               ];
             };
-            Mochizuki = self.nixos-flake.lib.mkLinuxSystem {
-              nixpkgs.hostPlatform = "x86_64-linux";
-              imports = [
+            Mochizuki = inputs.nixos-unstable.lib.nixosSystem {
+              # nixpkgs.hostPlatform = "x86_64-linux";
+              system = "x86_64-linux";
+              modules = [
+                self.nixosModules.common
                 ./hosts/general.nix
-                ./cachix
                 ./etc/fonts.nix
                 ./etc/hyprland.nix
                 ./hosts/Mochizuki/configuration.nix
                 ./hosts/Mochizuki/hardware-configuration.nix
                 inputs.home-manager-unstable.nixosModules.home-manager
                 ({ config, ... }:
-                {
-                  home-manager.users."kaguya@Mochizuki" = {
-                    imports = [ ./users/kaguya/home.nix ];
-                  };
-                })
+                  {
+                    home-manager.users."kaguya" = {
+                      imports = [
+                        ./users/kaguya/home.nix
+                        ./users/kaguya/starship.nix
+                      ];
+                    };
+                  })
               ];
             };
             ShirosuzuGakuen = self.nixos-flake.lib.mkLinuxSystem {
               nixpkgs.hostPlatform = "x86_64-linux";
               imports = [
+                self.nixosModules.common
                 ./hosts/general.nix
-                ./cachix
                 ./hosts/ShirosuzuGakuen/configuration.nix
                 ./hosts/ShirosuzuGakuen/hardware-configuration.nix
                 inputs.home-manager.nixosModules.home-manager
               ];
             };
           };
+          # All nixos/nix-darwin configurations are kept here.
+          nixosModules = {
+            # Common nixos/nix-darwin configuration shared between Linux and macOS.
+            common = { pkgs, ... }: {
+              # Allow unfree packages
+              nixpkgs = {
+                config = {
+                  allowUnfree = true;
+                };
+                overlays = [
+                  inputs.nur.overlay
+                ];
+              };
+              # Enable flakes
+              nix = {
+                settings = {
+                  experimental-features = [ "nix-command" "flakes" ];
+                  trusted-users = [ "@wheel" ];
+                  allowed-users = [ "@wheel" ];
+                };
+              };
+              imports = [
+                ./cachix
+              ];
+
+            };
+          };
+
         };
 
-    #homeConfigurations."kori@Folkroll" = inputs.home-manager.lib.homeManagerConfiguration {
-    #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-    #  modules = [
-    #   ./users/kori/home.nix
-    #  ];
-    #};
 
-    #homeConfigurations."minato@ShirosuzuGakuen" = inputs.home-manager.lib.homeManagerConfiguration {
-    #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-    #  modules = [
-    #   ./users/minato/home.nix
-    #  ];
-    #};
+      #homeConfigurations."kori@Folkroll" = inputs.home-manager.lib.homeManagerConfiguration {
+      #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+      #  modules = [
+      #   ./users/kori/home.nix
+      #  ];
+      #};
 
-    perSystem = { pkgs, self', system, lib, config, inputs', ... }: {
-      _module.args.pkgs = import inputs.nixpkgs {
-        inherit system;
-        overlays = [
-          inputs.nur.overlay
-        ];
+      #homeConfigurations."minato@ShirosuzuGakuen" = inputs.home-manager.lib.homeManagerConfiguration {
+      #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
+      #  modules = [
+      #   ./users/minato/home.nix
+      #  ];
+      #};
+
+      perSystem = { pkgs, self', system, lib, config, inputs', ... }: {
+        formatter = pkgs.nixpkgs-fmt;
+        _module.args.pkgs = import inputs.nixpkgs {
+          inherit system;
+          overlays = [
+            inputs.nur.overlay
+          ];
+        };
       };
     };
-  };
 }
 

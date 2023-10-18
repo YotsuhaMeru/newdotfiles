@@ -1,4 +1,4 @@
-{pkgs, ...}:
+{ pkgs, ... }:
 
 {
 
@@ -14,6 +14,6 @@
       KillMode = "process";
     };
     wantedBy = [ "multi-user.target" ];
-  }; 
+  };
 
 }

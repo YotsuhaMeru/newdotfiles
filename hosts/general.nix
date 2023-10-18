@@ -1,16 +1,14 @@
-{ config, pkgs, ...}:
+{ config, pkgs, ... }:
 
 {
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  nix.settings.experimental-features = "nix-command flakes"; 
-
   # Enable networking
   networking.networkmanager.enable = true;
 
   # mdns service
-    services.avahi = {
+  services.avahi = {
     enable = true;
     nssmdns = true;
     # publish/announce machine
