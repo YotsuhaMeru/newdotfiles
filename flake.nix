@@ -60,8 +60,29 @@
                   })
               ];
             };
+            Sweettail = inputs.nixos-unstable.lib.nixosSystem {
+              system = "x86_64-linux";
+              modules = [
+                self.nixosModules.common
+                ./etc/fonts.nix
+                ./etc/hyprland.nix
+                ./hosts/Sweettail/configuration.nix
+                ./hosts/Sweettail/hardware-configuration.nix
+                inputs.home-manager-unstable.nixosModules.home-manager
+                ({ config, pkgs, ... }:
+                  {
+                    home-manager.users."ichika" = {
+                      imports = [
+                        ./users/ichika/home.nix
+                        ./etc/hmModules/starship.nix
+                        inputs.nixindb-unstable.hmModules.nix-index
+                      ];
+                    };
+                  })
+              ];
+
+            };
             Mochizuki = inputs.nixos-unstable.lib.nixosSystem {
-              # nixpkgs.hostPlatform = "x86_64-linux";
               system = "x86_64-linux";
               modules = [
                 self.nixosModules.common

@@ -6,6 +6,8 @@
     homeDirectory = "/home/kori";
   };
 
+  programs.fish.enable = true;
+
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = ''
