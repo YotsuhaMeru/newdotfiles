@@ -87,6 +87,7 @@
                   imports = [
                     ./users/ichika/home.nix
                     ./etc/hmModules/starship.nix
+                    ./users/ichika/hyprland
                     inputs.nixindb-unstable.hmModules.nix-index
                   ];
                 };
