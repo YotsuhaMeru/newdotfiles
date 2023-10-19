@@ -35,6 +35,8 @@
 
   environment.systemPackages = with pkgs; [
     firefox
+    tdesktop
+    discord
   ];
 
   users.users.kaguya = {

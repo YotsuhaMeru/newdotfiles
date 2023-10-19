@@ -40,6 +40,7 @@
 
       flake = {
         nixosConfigurations = {
+          # Central Server
           Folkroll = self.nixos-flake.lib.mkLinuxSystem {
             nixpkgs.hostPlatform = "x86_64-linux";
             imports = [
@@ -66,12 +67,14 @@
               })
             ];
           };
+          # ThinClient Laptop
           Sweettail = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";
             modules = [
               self.nixosModules.common
               ./etc/fonts.nix
               ./etc/hyprland.nix
+              ./etc/distributedBuilds.nix
               ./hosts/Sweettail/configuration.nix
               ./hosts/Sweettail/hardware-configuration.nix
               inputs.home-manager-unstable.nixosModules.home-manager
@@ -90,6 +93,7 @@
               })
             ];
           };
+          # Desktop
           Mochizuki = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";
             modules = [
@@ -116,6 +120,7 @@
               })
             ];
           };
+          # NAS Server
           ShirosuzuGakuen = self.nixos-flake.lib.mkLinuxSystem {
             nixpkgs.hostPlatform = "x86_64-linux";
             imports = [
