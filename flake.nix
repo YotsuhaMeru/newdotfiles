@@ -51,8 +51,9 @@
                     home-manager.users."kori" = {
                       imports = [
                         inputs.hyprland.homeManagerModules.default
-                        {wayland.windowManager.hyprland.enable = true;}
+                        { wayland.windowManager.hyprland.enable = true; }
                         ./users/kori/home.nix
+                        ./etc/hmModules/starship.nix
                         inputs.nixindb-stable.hmModules.nix-index
                       ];
                     };
@@ -75,7 +76,7 @@
                     home-manager.users."kaguya" = {
                       imports = [
                         ./users/kaguya/home.nix
-                        ./users/kaguya/starship.nix
+                        ./etc/hmModules/starship.nix
                         ./users/kaguya/hyprland
                         inputs.nixindb-unstable.hmModules.nix-index
                       ];
@@ -95,6 +96,7 @@
                     home-manager.users."minato" = {
                       imports = [
                         ./users/minato/home.nix
+                        ./etc/hmModules/starship.nix
                         inputs.nixindb-stable.hmModules.nix-index
                       ];
                     };

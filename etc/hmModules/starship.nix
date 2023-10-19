@@ -71,3 +71,4 @@
           } + /palettes/${flavour}.toml));
     };
 }
+
