@@ -24,7 +24,7 @@
     packages = with pkgs; [ ];
   };
 
-
+  programs.hyprland.enable = true;
 
   nix.settings.trusted-users = [ "ichika" "kori" ];
 
