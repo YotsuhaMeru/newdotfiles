@@ -25,7 +25,7 @@
       kochi-substitute
       source-code-pro
       ttf_bitstream_vera
-      emacs-all-the-icons-fonts
+      nerdfonts
     ];
   };
 

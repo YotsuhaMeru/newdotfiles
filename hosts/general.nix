@@ -26,12 +26,25 @@
   users.defaultUserShell = pkgs.fish;
   programs.fish.enable = true;
 
+  environment.variables.EDITOR = "vim";
+
   # default syspkg
   environment.systemPackages = with pkgs; [
     wget
     vim
     git
   ];
+
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  programs.mtr.enable = true;
+
+  # GTK2 fallback to ncurses when gui isn't available
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+    pinentryFlavor = "gtk2";
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";

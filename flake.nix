@@ -15,6 +15,14 @@
       inputs.nixpkgs.follows = "/nixos-unstable";
     };
     nur.url = "github:nix-community/nur";
+    nixindb-stable = {
+      url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    nixindb-unstable = {
+      url = "github:Mic92/nix-index-database";
+      inputs.nixpkgs.follows = "/nixos-unstable";
+    };
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixos-flake.url = "github:srid/nixos-flake";
   };
@@ -33,12 +41,20 @@
               nixpkgs.hostPlatform = "x86_64-linux";
               imports = [
                 self.nixosModules.common
-                ./hosts/general.nix
                 ./hosts/Folkroll/configuration.nix
                 ./hosts/Folkroll/hardware-configuration.nix
                 ./srv_services/Folkroll
                 ./hosts/Folkroll/webservices.nix
                 inputs.home-manager.nixosModules.home-manager
+                ({ config, pkgs, ... }:
+                  {
+                    home-manager.users."kori" = {
+                      imports = [
+                        ./users/kori/home.nix
+                        inputs.nixindb-stable.hmModules.nix-index
+                      ];
+                    };
+                  })
               ];
             };
             Mochizuki = inputs.nixos-unstable.lib.nixosSystem {
@@ -46,18 +62,20 @@
               system = "x86_64-linux";
               modules = [
                 self.nixosModules.common
-                ./hosts/general.nix
                 ./etc/fonts.nix
                 ./etc/hyprland.nix
+                ./etc/wine.nix
                 ./hosts/Mochizuki/configuration.nix
                 ./hosts/Mochizuki/hardware-configuration.nix
                 inputs.home-manager-unstable.nixosModules.home-manager
-                ({ config, ... }:
+                ({ config, pkgs, ... }:
                   {
                     home-manager.users."kaguya" = {
                       imports = [
                         ./users/kaguya/home.nix
                         ./users/kaguya/starship.nix
+                        ./users/kaguya/hyprland
+                        inputs.nixindb-unstable.hmModules.nix-index
                       ];
                     };
                   })
@@ -67,10 +85,18 @@
               nixpkgs.hostPlatform = "x86_64-linux";
               imports = [
                 self.nixosModules.common
-                ./hosts/general.nix
                 ./hosts/ShirosuzuGakuen/configuration.nix
                 ./hosts/ShirosuzuGakuen/hardware-configuration.nix
                 inputs.home-manager.nixosModules.home-manager
+                ({ config, pkgs, ... }:
+                  {
+                    home-manager.users."minato" = {
+                      imports = [
+                        ./users/minato/home.nix
+                        inputs.nixindb-stable.hmModules.nix-index
+                      ];
+                    };
+                  })
               ];
             };
           };
@@ -97,6 +123,7 @@
               };
               imports = [
                 ./cachix
+                ./hosts/general.nix
               ];
 
             };
