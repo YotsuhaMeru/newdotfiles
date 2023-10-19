@@ -1,10 +1,13 @@
-{ config, pkgs, ... }:
 {
+  config,
+  pkgs,
+  ...
+}: {
   wayland.windowManager.hyprland.enable = true;
 
   home.packages = with pkgs; [
     swaynotificationcenter
-    (nerdfonts.override { fonts = [ "Ubuntu" ]; })
+    (nerdfonts.override {fonts = ["Ubuntu"];})
   ];
   xdg.configFile."swaync/style.css".source = pkgs.fetchurl {
     url = "https://github.com/catppuccin/swaync/releases/download/v0.1.2.1/mocha.css";

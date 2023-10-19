@@ -1,13 +1,15 @@
-{ lib, pkgs, ... }:
 {
-  programs.starship =
-    let
-      flavour = "mocha"; # One of `latte`, `frappe`, `macchiato`, or `mocha`
-    in
-    {
-      enable = true;
-      enableFishIntegration = true;
-      settings = {
+  lib,
+  pkgs,
+  ...
+}: {
+  programs.starship = let
+    flavour = "mocha"; # One of `latte`, `frappe`, `macchiato`, or `mocha`
+  in {
+    enable = true;
+    enableFishIntegration = true;
+    settings =
+      {
         add_newline = true;
         format = lib.concatStrings [
           "$username"
@@ -61,14 +63,15 @@
           style = "bright-black";
         };
         palette = "catppuccin_${flavour}";
-      } // builtins.fromTOML (builtins.readFile
+      }
+      // builtins.fromTOML (builtins.readFile
         (pkgs.fetchFromGitHub
           {
             owner = "catppuccin";
             repo = "starship";
             rev = "3e3e54410c3189053f4da7a7043261361a1ed1bc";
             sha256 = "soEBVlq3ULeiZFAdQYMRFuswIIhI9bclIU8WXjxd7oY=";
-          } + /palettes/${flavour}.toml));
-    };
+          }
+          + /palettes/${flavour}.toml));
+  };
 }
-

@@ -1,10 +1,8 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   systemd.services.minecraft_direwolf = {
     enable = true;
     description = "Minecraft Direwolf Server";
-    after = [ "network-online.target" ];
+    after = ["network-online.target"];
     serviceConfig = {
       TimeoutStopSec = "240s";
       WorkingDirectory = "/srv/server/minecraft_direwolf";
@@ -12,6 +10,6 @@
       ExecStop = "/srv/server/minecraft_direwolf/stop.sh";
       Restart = "always";
     };
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = ["multi-user.target"];
   };
 }

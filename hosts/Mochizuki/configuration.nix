@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   networking.hostName = "Mochizuki"; # Define your hostname.
 
   # Configure keymap in X11
@@ -38,8 +40,8 @@
   users.users.kaguya = {
     isNormalUser = true;
     description = "Momose Kaguya";
-    extraGroups = [ "networkmanager" "wheel" ]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [ ];
+    extraGroups = ["networkmanager" "wheel"]; # Enable ‘sudo’ for the user.
+    packages = with pkgs; [];
   };
 
   # Open ports in the firewall.
@@ -59,5 +61,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
-
 }

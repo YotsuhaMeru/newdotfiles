@@ -1,7 +1,9 @@
-{ lib, pkgs, config, ... }:
-
 {
-
+  lib,
+  pkgs,
+  config,
+  ...
+}: {
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
@@ -18,7 +20,7 @@
       theme = "catppuccin-mocha";
     };
     defaultSession = "hyprland";
-    sessionPackages = [ pkgs.hyprland ];
+    sessionPackages = [pkgs.hyprland];
   };
   environment.systemPackages = [
     pkgs.nur.repos.MtFBella109.catppuccin-mocha

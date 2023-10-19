@@ -1,10 +1,11 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running 갻nixos-help갽).
-
-{ config, pkgs, ... }:
-
+# and in the NixOS manual (accessible by running 혖enixos-help혖f).
 {
+  config,
+  pkgs,
+  ...
+}: {
   networking.hostName = "ShirosuzuGakuen"; # Define your hostname.
 
   console = {
@@ -23,14 +24,14 @@
     package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
   };
 
-  services.xserver.videoDrivers = [ "nvidia" ];
+  services.xserver.videoDrivers = ["nvidia"];
 
-  # Define a user account. Don't forget to set a password with 갻passwd갽.
+  # Define a user account. Don't forget to set a password with 혖epasswd혖f.
   users = {
     users.minato = {
       isNormalUser = true;
       description = "Asuka Minato";
-      extraGroups = [ "wheel" ]; # Enable 갻sudo갽 for the user.
+      extraGroups = ["wheel"]; # Enable 혖esudo혖f for the user.
       shell = pkgs.fish;
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDQEd6x7x71UyE0AQOF9Www22mUm/eScmL1zHkOUIYJP minato@ShirosuzuGakuen"
@@ -85,7 +86,6 @@
       "connection.mdns" = 2;
       "connection.llmnr" = 0;
     };
-
   };
 
   services.memcached = {
@@ -166,10 +166,9 @@
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
-  # on your system were taken. It갻s perfectly fine and recommended to leave
+  # on your system were taken. It혖es perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "21.05"; # Did you read the comment?
-
 }

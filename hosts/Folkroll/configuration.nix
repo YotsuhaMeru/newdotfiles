@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   networking.hostName = "Folkroll"; # Define your hostname.
 
   # Configure keymap in X11
@@ -16,17 +18,17 @@
   users.users.kori = {
     isNormalUser = true;
     description = "Miyohashi Kori";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPEN4dIHBHXEpMJN954xil+8lPbcoFqWO5dVFnLVwzZ2"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJvm29aFb1vnetFE991RDzawghS1T96ohKL6JlcxDo8V"
     ];
-    packages = with pkgs; [ ];
+    packages = with pkgs; [];
   };
 
   programs.hyprland.enable = true;
 
-  nix.settings.trusted-users = [ "ichika" "kori" ];
+  nix.settings.trusted-users = ["ichika" "kori"];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -42,7 +44,7 @@
 
   environment = {
     sessionVariables = {
-      LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [ pkgs.libuuid ];
+      LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [pkgs.libuuid];
     };
   };
 
@@ -120,8 +122,6 @@
         "valid users" = "kori";
       };
     };
-
-
   };
 
   security.rtkit.enable = true;
@@ -139,11 +139,10 @@
   systemd.targets.hybrid-sleep.enable = false;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  networking.firewall.allowedTCPPorts = [80 443];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
-
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -152,5 +151,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "23.05"; # Did you read the comment?
-
 }

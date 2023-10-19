@@ -1,10 +1,9 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   # Razubot
   systemd.services.RazuBot = {
     enable = true;
     description = "Discord bots(Razubot)";
-    after = [ "network-online.target" ];
+    after = ["network-online.target"];
     serviceConfig = {
       RestartSec = "1000ms";
       WorkingDirectory = "/srv/privdisbot/RazuBot-1/";
@@ -12,14 +11,14 @@
       Restart = "always";
       KillMode = "process";
     };
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = ["multi-user.target"];
   };
 
   systemd.services.MusicBot = {
     enable = true;
     description = "Discord bots(MusicBot)";
-    after = [ "network-online.target" ];
-    path = [ "ffmpeg" ];
+    after = ["network-online.target"];
+    path = ["ffmpeg"];
     serviceConfig = {
       RestartSec = "1000ms";
       WorkingDirectory = "/srv/privdisbot/Discord-Dejico-MusicBot/";
@@ -27,13 +26,13 @@
       Restart = "always";
       KillMode = "process";
     };
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = ["multi-user.target"];
   };
 
   systemd.services.kEnginePB = {
     enable = true;
     description = "Discord bots(kEnginePB)";
-    after = [ "network-online.target" ];
+    after = ["network-online.target"];
     serviceConfig = {
       RestartSec = "1000ms";
       WorkingDirectory = "/srv/privdisbot/kEnginePB/";
@@ -41,13 +40,13 @@
       Restart = "always";
       KillMode = "process";
     };
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = ["multi-user.target"];
   };
 
   systemd.services.eewBot = {
     enable = true;
     description = "Discord bots(eewBot)";
-    after = [ "network-online.target" ];
+    after = ["network-online.target"];
     serviceConfig = {
       RestartSec = "1000ms";
       WorkingDirectory = "/srv/privdisbot/fuckoffeew/";
@@ -55,13 +54,13 @@
       Restart = "always";
       KillMode = "process";
     };
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = ["multi-user.target"];
   };
 
   systemd.services.gomamayoBot = {
     enable = false;
     description = "Discord bots(gomamayoBot)";
-    after = [ "network-online.target" ];
+    after = ["network-online.target"];
     serviceConfig = {
       RestartSec = "1000ms";
       WorkingDirectory = "/srv/privdisbot/gomamayo/";
@@ -69,13 +68,13 @@
       Restart = "always";
       KillMode = "process";
     };
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = ["multi-user.target"];
   };
 
   systemd.services.GraybotCanary = {
     enable = true;
     description = "Discord bots(GraybotCanary)";
-    after = [ "network-online.target" ];
+    after = ["network-online.target"];
     serviceConfig = {
       RestartSec = "1000ms";
       WorkingDirectory = "/srv/privdisbot/GrayBot-Voice/";
@@ -83,6 +82,6 @@
       Restart = "always";
       KillMode = "process";
     };
-    wantedBy = [ "multi-user.target" ];
+    wantedBy = ["multi-user.target"];
   };
 }

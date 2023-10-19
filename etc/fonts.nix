@@ -1,6 +1,8 @@
-{ config, pkgs, ... }:
-
 {
+  config,
+  pkgs,
+  ...
+}: {
   fonts = {
     fontconfig = {
       defaultFonts = {
@@ -28,5 +30,4 @@
       nerdfonts
     ];
   };
-
 }
