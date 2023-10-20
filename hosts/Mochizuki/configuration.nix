@@ -44,8 +44,17 @@
     description = "Momose Kaguya";
     extraGroups = ["networkmanager" "wheel"]; # Enable ‘sudo’ for the user.
     packages = with pkgs; [];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDo2kTqESEv6lDQ/GmpIZXTamdBOEmeX4nviw2PY0hOY kaguya@Mochizuki"
+    ];
   };
 
+  services.openssh = {
+    enable = true;
+    settings.PasswordAuthentication = false;
+    settings.KbdInteractiveAuthentication = false;
+    settings.PermitRootLogin = "no";
+  };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
