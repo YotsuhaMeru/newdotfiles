@@ -67,6 +67,29 @@
               })
             ];
           };
+          # MBA
+          NixbookAir = inputs.nixos-unstable.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [
+              self.nixosModules.common
+              ./etc/fonts.nix
+              ./etc/hyprland.nix
+              ./etc/distributedBuilds.nix
+              ./hosts/NixbookAir/configuration.nix
+              ./hosts/NixbookAir/hardware-configuration.nix
+              inputs.home-manager-unstable.nixosModules.home-manager
+              ({config, pkgs, ...}:
+              {
+                home-manager.users."merutan1392" = {
+                  imports = [
+                    ./users/merutan1392/home.nix
+                    ./etc/hmModules/starship.nix
+                    inputs.nixindb-unstable.hmModules.nix-index
+                  ];
+                };
+              })
+            ];
+          };
           # ThinClient Laptop
           Sweettail = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";
