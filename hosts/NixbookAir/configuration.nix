@@ -1,6 +1,9 @@
-{config, pkgs, ...}:
 {
-# Use the systemd-boot EFI boot loader.
+  config,
+  pkgs,
+  ...
+}: {
+  # Use the systemd-boot EFI boot loader.
   boot.loader = {
     timeout = 0;
     systemd-boot = {
@@ -17,10 +20,10 @@
   boot.kernelParams = [
     "i915.fastboot=1"
   ];
-  boot.supportedFilesystems = [ "ntfs" ];
+  boot.supportedFilesystems = ["ntfs"];
 
   networking.hostName = "NixbookAir";
-  
+
   console = {
     font = "Lat2-Terminus16";
     keyMap = "jp106";
@@ -42,7 +45,7 @@
       ];
     };
   };
-    
+
   sound.enable = true;
 
   hardware.opengl.enable = true;
@@ -53,7 +56,7 @@
     users.merutan1392 = {
       isNormalUser = true;
       home = "/home/merutan1392";
-      extraGroups = [ "wheel" "networkmanager" "input" "audio" "video" "docker" ];
+      extraGroups = ["wheel" "networkmanager" "input" "audio" "video" "docker"];
     };
   };
 
@@ -91,7 +94,7 @@
     softether
     blueman
     unityhub
-  ];  
+  ];
 
   programs.steam = {
     enable = true;
@@ -114,6 +117,6 @@
 
   networking.firewall.enable = true;
   virtualisation.docker.enable = true;
-  
+
   system.stateVersion = "22.05";
 }

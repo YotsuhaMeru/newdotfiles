@@ -78,8 +78,11 @@
               ./hosts/NixbookAir/configuration.nix
               ./hosts/NixbookAir/hardware-configuration.nix
               inputs.home-manager-unstable.nixosModules.home-manager
-              ({config, pkgs, ...}:
-              {
+              ({
+                config,
+                pkgs,
+                ...
+              }: {
                 home-manager.users."merutan1392" = {
                   imports = [
                     ./users/merutan1392/home.nix
