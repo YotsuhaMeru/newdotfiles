@@ -61,6 +61,12 @@
     };
   };
 
+  services.openvpn = {
+    servers = {
+      homeVPN = { config = '' config /home/merutan1392/OpenVPNConf.ovpn''; };
+    };
+  };
+
   environment.systemPackages = with pkgs; [
     polkit-kde-agent
     xdg-desktop-portal-wlr
