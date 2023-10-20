@@ -31,6 +31,7 @@
 
   services.xserver = {
     enable = true;
+    layout = "jp";
     videoDrivers = ["intel"];
     deviceSection = ''
       Option "DRI" "3"
