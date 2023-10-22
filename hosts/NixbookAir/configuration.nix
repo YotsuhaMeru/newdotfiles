@@ -63,7 +63,7 @@
 
   services.openvpn = {
     servers = {
-      homeVPN = { config = '' config /home/merutan1392/OpenVPNConf.ovpn''; };
+      homeVPN = {config = ''config /home/merutan1392/OpenVPNConf.ovpn'';};
     };
   };
 
