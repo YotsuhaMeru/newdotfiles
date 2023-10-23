@@ -39,6 +39,12 @@
     discord
   ];
 
+  programs.steam = {
+    enable = true;
+    remotePlay.openFirewall = true;
+    dedicatedServer.openFirewall = true;
+  };
+
   users.users.kaguya = {
     isNormalUser = true;
     description = "Momose Kaguya";
