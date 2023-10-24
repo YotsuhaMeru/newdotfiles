@@ -239,15 +239,6 @@
     enable = true;
     package = pkgs.waybar.overrideAttrs (oa: {
       mesonFlags = (oa.mesonFlags or []) ++ ["-Dexperimental=true"];
-      patches =
-        (oa.patches or [])
-        ++ [
-          (pkgs.fetchpatch {
-            name = "fix waybar hyprctl";
-            url = "https://aur.archlinux.org/cgit/aur.git/plain/hyprctl.patch?h=waybar-hyprland-git";
-            sha256 = "sha256-pY3+9Dhi61Jo2cPnBdmn3NUTSA8bAbtgsk2ooj4y7aQ=";
-          })
-        ];
     });
     systemd.enable = true;
     settings = [
@@ -328,31 +319,31 @@
     ];
     style = ''
       * {
-              font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-                    font-size: 13px;
-                        }
+        font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+        font-size: 13px;
+      }
 
-                            window#waybar {
-                                    background-color: rgba(43, 48, 59, 0.5);
-                                        }
+      window#waybar {
+        background-color: rgba(43, 48, 59, 0.5);
+      }
 
-                                            #clock,
-                                                #network,
-                                                    #temperature,
-                                                        #cpu,
-                                                            #memory,
-                                                                #pulseaudio,
-                                                                    #tray,
-                                                                        #workspaces button,
-                                                                            #battery {
-                                                                                    background-color: #fcc0e3;
-                                                                                          color: #111111;
-                                                                                                border-radius: 10px;
-                                                                                                      margin-top: 7px;
-                                                                                                            padding-left: 4px;
-                                                                                                                  padding-right: 4px;
-                                                                                                                        margin-right: 6px;
-                                                                                                                            }
+      #clock,
+      #network,
+      #temperature,
+      #cpu,
+      #memory,
+      #pulseaudio,
+      #tray,
+      #workspaces button,
+      #battery {
+        background-color: #fcc0e3;
+        color: #111111;
+        border-radius: 10px;
+        margin-top: 7px;
+        padding-left: 4px;
+        padding-right: 4px;
+        margin-right: 6px;
+      }
     '';
   };
   programs.kitty = {
