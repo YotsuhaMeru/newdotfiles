@@ -1,33 +1,36 @@
 {pkgs, ...}: {
   i18n.inputMethod = {
     enabled = "fcitx5";
-    fcitx5.addons = with pkgs; [fcitx5-mozc fcitx5-gtk libsForQt5.fcitx5-qt ];
+    fcitx5.addons = with pkgs; [fcitx5-mozc fcitx5-gtk libsForQt5.fcitx5-qt];
   };
 
-  xdg.configFile."fcitx5/profile".text = ''
-    [Groups/0]
-    # Group Name
-    Name=Default
-    # Layout
-    Default Layout=jp
-    # Default Input Method
-    DefaultIM=mozc
+  xdg.configFile."fcitx5/profile" = {
+    force = true;
+    text = ''
+      [Groups/0]
+      # Group Name
+      Name=Default
+      # Layout
+      Default Layout=jp
+      # Default Input Method
+      DefaultIM=mozc
 
-    [Groups/0/Items/0]
-    # Name
-    Name=keyboard-jp
-    # Layout
-    Layout=
+      [Groups/0/Items/0]
+      # Name
+      Name=keyboard-jp
+      # Layout
+      Layout=
 
-    [Groups/0/Items/1]
-    # Name
-    Name=mozc
-    # Layout
-    Layout=
+      [Groups/0/Items/1]
+      # Name
+      Name=mozc
+      # Layout
+      Layout=
 
-    [GroupOrder]
-    0=Default
-  '';
+      [GroupOrder]
+      0=Default
+    '';
+  };
 
   xdg.configFile."fcitx5/config".text = ''
     [Hotkey]
