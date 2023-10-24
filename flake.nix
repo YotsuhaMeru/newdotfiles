@@ -23,6 +23,7 @@
       url = "github:Mic92/nix-index-database";
       inputs.nixpkgs.follows = "/nixos-unstable";
     };
+    deploy-rs.url = "github:serokell/deploy-rs";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixos-flake.url = "github:srid/nixos-flake";
     treefmt-nix.url = "github:numtide/treefmt-nix";
@@ -201,20 +202,6 @@
           };
         };
       };
-
-      #homeConfigurations."kori@Folkroll" = inputs.home-manager.lib.homeManagerConfiguration {
-      #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-      #  modules = [
-      #   ./users/kori/home.nix
-      #  ];
-      #};
-
-      #homeConfigurations."minato@ShirosuzuGakuen" = inputs.home-manager.lib.homeManagerConfiguration {
-      #  pkgs = inputs.nixpkgs.legacyPackages.x86_64-linux;
-      #  modules = [
-      #   ./users/minato/home.nix
-      #  ];
-      #};
 
       perSystem = {
         pkgs,

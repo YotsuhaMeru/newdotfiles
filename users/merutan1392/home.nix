@@ -248,7 +248,7 @@
         "height" = 30;
         "width" = 1280;
         "spacing" = 4;
-        "modules-left" = ["wlr/workspaces"];
+        "modules-left" = ["hyprland/workspaces"];
         "modules-right" = ["pulseaudio" "network" "temperature" "battery" "clock" "tray"];
         "keyboard-state" = {
           "numlock" = true;
