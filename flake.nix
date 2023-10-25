@@ -142,7 +142,7 @@
                     ./users/kaguya/home.nix
                     ./etc/hmModules/starship.nix
                     ./etc/hmModules/ime.nix
-                    ./etc/hmModules/swaync.nix
+                    ./users/kaguya/waybar.nix
                     ./users/kaguya/hyprland
                     inputs.nixindb-unstable.hmModules.nix-index
                   ];
