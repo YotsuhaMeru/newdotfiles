@@ -177,7 +177,7 @@
         # All nixos/nix-darwin configurations are kept here.
         nixosModules = {
           # Common nixos/nix-darwin configuration shared between Linux and macOS.
-          common = {pkgs, ...}: {
+          common = {pkgs, self, ...}: {
             # Allow unfree packages
             nixpkgs = {
               config = {

@@ -12,11 +12,6 @@
   };
 
   services.dbus.enable = true;
-  xdg.portal.enable = true;
-  xdg.portal.extraPortals = with pkgs; [
-    xdg-desktop-portal-hyprland
-    xdg-desktop-portal-gtk
-  ];
 
   services.xserver.displayManager = {
     sddm = {
@@ -34,5 +29,6 @@
     pkgs.nur.repos.MtFBella109.catppuccin-mocha
     wofi
     kitty
+    xdg-desktop-portal-hyprland
   ];
 }

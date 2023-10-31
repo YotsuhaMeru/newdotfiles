@@ -8,6 +8,9 @@
     homeDirectory = "/home/kaguya";
   };
 
+  home.packages = with pkgs; [
+    lutris
+  ];
   programs.fish.enable = true;
   programs.emacs = {
     enable = true;

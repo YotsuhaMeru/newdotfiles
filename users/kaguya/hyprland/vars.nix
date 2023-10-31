@@ -1,6 +1,5 @@
 {
   wayland.windowManager.hyprland.extraConfig = ''
-    env = XCURSOR_SIZE,24
 
     # Discord etc fix
     env = NIXOS_OZONE_WL,1
