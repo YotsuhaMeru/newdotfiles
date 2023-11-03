@@ -28,6 +28,7 @@
     nixos-flake.url = "github:srid/nixos-flake";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     devshell.url = "github:numtide/devshell";
+    disko.url = "github:nix-community/disko";
   };
 
   outputs = inputs @ {self, ...}:
@@ -66,6 +67,17 @@
                   ];
                 };
               })
+            ];
+          };
+          # x240
+          Asumi = inputs.nixos-unstable.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [
+              self.nixosModules.common
+              ./etc/fonts.nix
+              ./etc/distributedBuilds.nix
+              ./hosts/Asumi
+              inputs.home-manager-unstable.nixosModules.home-manager
             ];
           };
           # MBA
