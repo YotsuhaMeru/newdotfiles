@@ -70,13 +70,13 @@
             ];
           };
           # x240
-          Asumi = inputs.nixos-unstable.lib.nixosSystem {
+          Stella = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";
             modules = [
               self.nixosModules.common
               ./etc/fonts.nix
               ./etc/distributedBuilds.nix
-              ./hosts/Asumi
+              ./hosts/Stella
               inputs.home-manager-unstable.nixosModules.home-manager
             ];
           };

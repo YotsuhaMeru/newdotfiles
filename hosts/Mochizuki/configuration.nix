@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  lib,
   ...
 }: {
   networking.hostName = "Mochizuki"; # Define your hostname.
@@ -10,6 +11,7 @@
     layout = "jp";
     xkbVariant = "";
   };
+
 
   # Configure console keymap
   console.keyMap = "jp106";
@@ -37,6 +39,7 @@
   environment.systemPackages = with pkgs; [
     firefox
     tdesktop
+    pavucontrol
     discord
     (pkgs.makeDesktopItem {
       name = "discord";
