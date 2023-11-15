@@ -48,7 +48,13 @@
     pulse.enable = true;
   };
 
-
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    firefox
+    microsoft-edge-beta
+  ];
+  
   programs.fish.enable = true;
   services.openssh = {
     enable = true;
