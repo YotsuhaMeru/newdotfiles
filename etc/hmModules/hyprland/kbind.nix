@@ -16,6 +16,9 @@
     bind = $mainMod, P, pseudo, # dwindle
     bind = $mainMod, x, togglesplit, # dwindle
 
+    # Screenshot
+    bind = $mainMod SHIFT, S, exec, grim -g "$(slurp)" | wl-copy
+
     # Move focus with mainMod + arrow keys
     bind = $mainMod, h, movefocus, l
     bind = $mainMod, l, movefocus, r
@@ -23,10 +26,10 @@
     bind = $mainMod, j, movefocus, d
 
     # Move windows
-    bind = SUPER SHIFT, H, movewindow, l
-    bind = SUPER SHIFT, L, movewindow, r
-    bind = SUPER SHIFT, K, movewindow, u
-    bind = SUPER SHIFT, J, movewindow, d
+    bind = $mainMod SHIFT, H, movewindow, l
+    bind = $mainMod SHIFT, L, movewindow, r
+    bind = $mainMod SHIFT, K, movewindow, u
+    bind = $mainMod SHIFT, J, movewindow, d
 
     # Fullscreen
     bind = $mainMod, F, fullscreen

@@ -27,6 +27,7 @@
   services.xserver.videoDrivers = ["nvidia"];
 
   # Define a user account. Don't forget to set a password with epasswdf.
+  var.username = "minato";
   users = {
     users.minato = {
       isNormalUser = true;

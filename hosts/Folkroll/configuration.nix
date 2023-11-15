@@ -14,8 +14,9 @@
   # Configure console keymap
   console.keyMap = "jp106";
 
+  var.username = "kori";
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.kori = {
+  users.users.${config.var.username} = {
     isNormalUser = true;
     description = "Miyohashi Kori";
     extraGroups = ["networkmanager" "wheel"];

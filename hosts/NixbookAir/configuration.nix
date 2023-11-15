@@ -53,6 +53,7 @@
   hardware.opengl.driSupport = true;
   hardware.opengl.driSupport32Bit = true;
 
+  var.username = "merutan1392";
   users = {
     users.merutan1392 = {
       isNormalUser = true;

@@ -28,7 +28,17 @@
   environment.systemPackages = with pkgs; [
     pkgs.nur.repos.MtFBella109.catppuccin-mocha
     wofi
+    gnome.nautilus
     kitty
-    xdg-desktop-portal-hyprland
+    wl-clipboard
+    grim
+    slurp
+    at-spi2-core
+    qt5.qtwayland
+    qt6.full
   ];
+
+  xdg.portal = {
+    enable = true;
+  };
 }

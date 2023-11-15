@@ -38,6 +38,7 @@
         inputs.nixos-flake.flakeModule
         inputs.treefmt-nix.flakeModule
         inputs.devshell.flakeModule
+        ./hosts/deploy.nix
       ];
 
       flake = {
@@ -76,8 +77,24 @@
               self.nixosModules.common
               ./etc/fonts.nix
               ./etc/distributedBuilds.nix
+              ./etc/hyprland.nix
               ./hosts/Stella
+              inputs.disko.nixosModules.disko
               inputs.home-manager-unstable.nixosModules.home-manager
+              ({config, pkgs, ...}: {
+                home-manager.users."natsume" = {
+                  imports = [
+                    ./users/natsume/home.nix
+                    ./users/natsume/waybar.nix
+                    ./etc/hmModules/starship.nix
+                    ./etc/hmModules/ime.nix
+                    ./etc/hmModules/hyprland
+                    # kaguya
+                    ./users/kaguya/hyprland
+                    inputs.nixindb-unstable.hmModules.nix-index
+                  ];
+                };
+              })
             ];
           };
           # MBA
@@ -154,6 +171,7 @@
                     ./users/kaguya/home.nix
                     ./etc/hmModules/starship.nix
                     ./etc/hmModules/ime.nix
+                    ./etc/hmModules/hyprland
                     ./users/kaguya/waybar.nix
                     ./users/kaguya/hyprland
                     inputs.nixindb-unstable.hmModules.nix-index
@@ -197,6 +215,14 @@
               };
               overlays = [
                 inputs.nur.overlay
+                (
+                  final: prev: {
+                    deploy-rs = {
+                      inherit (prev) deploy-rs;
+                      inherit ((inputs.deploy-rs.overlay final prev).deploy-rs) lib;
+                    };
+                  }
+                )
               ];
             };
             # Enable flakes
@@ -210,7 +236,9 @@
             imports = [
               ./cachix
               ./hosts/general.nix
+              ./etc/globalvars.nix
             ];
+
           };
         };
       };

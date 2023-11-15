@@ -14,6 +14,8 @@
 
   home.packages = with pkgs; [
     lutris
+    python3
+    ripgrep
   ];
   programs.fish.enable = true;
   programs.emacs = {

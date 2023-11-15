@@ -55,7 +55,11 @@
 
     misc {
       enable_swallow = true
-      swallow_regex = ^(Alacritty)$
+      swallow_regex = ^(kitty)$
+    }
+
+    input {
+      kb_layout = jp
     }
 
     # Example per-device config
