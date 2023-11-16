@@ -9,6 +9,7 @@
 
   programs.hyprland = {
     enable = true;
+    xwayland.enable = true;
   };
 
   services.dbus.enable = true;
@@ -38,7 +39,7 @@
     qt6.full
   ];
 
-  xdg.portal = {
-    enable = true;
-  };
+
+  xdg.portal.enable = true;
+  xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 }

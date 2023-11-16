@@ -17,7 +17,6 @@
   boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod"];
   boot.initrd.kernelModules = [];
   boot.kernelModules = ["kvm-intel"];
-  boot.kernelParams = [ "module_blacklist=i915" ];
   boot.extraModulePackages = [];
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
@@ -81,7 +80,7 @@
     nvidiaSettings = true;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.production;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
