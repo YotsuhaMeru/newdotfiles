@@ -17,12 +17,6 @@
     env = XDG_CURRENT_DESKTOP,Hyprland
     env = GSETTINGS_BACKEND,keyfile
 
-    # NVIDIA FIX
-    env = LIBVA_DRIVER_NAME,nvidia
-    env = GBM_BACKEND,nvidia-drm
-    # env = __GLX_VENDOR_LIBRARY_NAME,nvidia
-    env = WLR_NO_HARDWARE_CURSORS,1
-
     # QT-related theming
     env = QT_QPA_PLATFORMTHEME,qt6ct
 

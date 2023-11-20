@@ -20,7 +20,7 @@
   services.xserver.enable = true;
 
   services.xserver.displayManager.gdm.autoSuspend = false;
-  programs.hyprland.enableNvidiaPatches = true;
+  programs.hyprland.enableNvidiaPatches = false;
 
   # Enable the GNOME Desktop Environment.
   services.xserver.displayManager.gdm.enable = false;

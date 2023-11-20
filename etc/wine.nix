@@ -7,5 +7,7 @@
     wineWowPackages.staging
     wineWowPackages.waylandFull
     winetricks
+    gamescope
+    mangohud
   ];
 }
