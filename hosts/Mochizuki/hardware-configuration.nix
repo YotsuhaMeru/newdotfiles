@@ -17,7 +17,10 @@
   boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod"];
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = ["kvm-intel"];
+  boot.kernelParams = ["intel_iommu=on"];
+  boot.supportedFilesystems = [ "ntfs" ];
   boot.extraModulePackages = [];
+  boot.extraModprobeConfig = "options kvm_intel nested=1";
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   fileSystems."/" = {
@@ -28,6 +31,12 @@
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/5F2A-739B";
     fsType = "vfat";
+  };
+
+  fileSystems."/mnt/hdd" = {
+    device = "/dev/disk/by-label/Data";
+    fsType = "ntfs-3g";
+    options = [ "rw" ];
   };
 
   swapDevices = [
@@ -42,6 +51,9 @@
   # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
 
   hardware.enableAllFirmware = true;
+
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
 
   hardware.opengl = {
     enable = true;

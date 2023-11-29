@@ -26,6 +26,8 @@
   services.xserver.displayManager.gdm.enable = false;
   services.xserver.desktopManager.gnome.enable = true;
 
+  services.blueman.enable = true;
+
   hardware.pulseaudio.enable = false;
   sound.enable = true;
   security.rtkit.enable = true;
