@@ -81,6 +81,7 @@
               self.nixosModules.common
               ./etc/fonts.nix
               ./etc/distributedBuilds.nix
+              ./etc/wine.nix
               ./etc/hyprland.nix
               ./hosts/Stella
               inputs.disko.nixosModules.disko
