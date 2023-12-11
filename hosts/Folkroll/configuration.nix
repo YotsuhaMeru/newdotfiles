@@ -42,6 +42,8 @@
     gcc
     ffmpeg
     libuuid
+    recfsusb2n
+    mirakurun
   ];
 
   environment = {
@@ -141,7 +143,7 @@
   systemd.targets.hybrid-sleep.enable = false;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [80 443];
+  networking.firewall.allowedTCPPorts = [80 443 40772];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;

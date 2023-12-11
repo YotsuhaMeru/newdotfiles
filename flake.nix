@@ -220,6 +220,7 @@
                 allowUnfree = true;
               };
               overlays = [
+                (final: prev: import ./pkgs final prev)
                 inputs.nur.overlay
                 (
                   final: prev: {
