@@ -64,8 +64,8 @@
               }: {
                 home-manager.users."kori" = {
                   imports = [
-                    inputs.hyprland.homeManagerModules.default
-                    {wayland.windowManager.hyprland.enable = true;}
+                    # inputs.hyprland.homeManagerModules.default
+                    # {wayland.windowManager.hyprland.enable = true;}
                     ./users/kori/home.nix
                     ./etc/hmModules/starship.nix
                     inputs.nixindb-stable.hmModules.nix-index
