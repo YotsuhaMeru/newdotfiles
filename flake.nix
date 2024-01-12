@@ -109,7 +109,6 @@
               self.nixosModules.common
               ./etc/fonts.nix
               ./etc/hyprland.nix
-              ./etc/distributedBuilds.nix
               ./hosts/NixbookAir/configuration.nix
               ./hosts/NixbookAir/hardware-configuration.nix
               inputs.home-manager-unstable.nixosModules.home-manager
@@ -166,7 +165,7 @@
               ./etc/virtualization.nix
               ./hosts/Mochizuki/configuration.nix
               ./hosts/Mochizuki/hardware-configuration.nix
-              inputs.home-manager-unstable.nixosModules.home-manager
+              inputs.home-manager-2311.nixosModules.home-manager
               ({
                 config,
                 pkgs,
