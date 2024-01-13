@@ -50,6 +50,7 @@
   environment.systemPackages = with pkgs; [
     firefox
     cudatoolkit
+    python3
   ];
 
   programs.fish.enable = true;
