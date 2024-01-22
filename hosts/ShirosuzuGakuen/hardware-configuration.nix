@@ -20,7 +20,7 @@
   boot.initrd.kernelModules = [];
   boot.kernelModules = [];
   boot.extraModulePackages = [];
-  boot.crashDump.enable = true;
+  # boot.crashDump.enable = true;
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/e95f4d39-1b0e-4b8b-8e44-445b5cd06c9c";
