@@ -8,6 +8,5 @@
 
     windowrulev2 = opacity 0.80 0.80,class:^(kitty)$
     windowrulev2 = opacity 0.80 0.80,class:^(emacs)$
-    windowrulev2 = opacity 0.80 0.80,class:^(pavucontrol)$
   '';
 }
