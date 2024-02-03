@@ -1,8 +1,8 @@
 {
   disko.devices = {
     disk = {
-      vdb = {
-        device = "/dev/vda";
+      sda = {
+        device = "/dev/sda";
         type = "disk";
         content = {
           type = "table";
@@ -20,7 +20,7 @@
               };
             }
             {
-              name = "YunagiTown";
+              name = "ChidamaGakuen";
               start = "500MiB";
               end = "100%";
               part-type = "primary";
