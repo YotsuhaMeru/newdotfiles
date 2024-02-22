@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   systemd.services.eewServlet = {
-    enable = true;
+    enable = false;
     description = "eewServlet";
     after = ["network-online.target"];
     serviceConfig = {
