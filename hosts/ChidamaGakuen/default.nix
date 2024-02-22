@@ -31,6 +31,10 @@
   hardware.enableAllFirmware = true;
   hardware.enableRedistributableFirmware = true;
 
+  virtualisation.podman.enable = true;
+  environment.systemPackages = with pkgs; [
+    distrobox
+  ];
   programs.fish.enable = true;
   services.openssh = {
     enable = true;
