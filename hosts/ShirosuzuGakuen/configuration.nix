@@ -51,6 +51,8 @@
     firefox
     cudatoolkit
     python3
+    screen
+    nodejs_18
   ];
 
   programs.fish.enable = true;
