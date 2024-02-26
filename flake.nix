@@ -117,6 +117,13 @@
                     inputs.nixindb-stable.hmModules.nix-index
                   ];
                 };
+                home-manager.users."hiyori" = {
+                  imports = [
+                    ./users/hiyori/home.nix
+                    ./etc/hmModules/starship.nix
+                    inputs.nixindb-stable.hmModules.nix-index
+                  ];
+                };
               })
             ];
           };
