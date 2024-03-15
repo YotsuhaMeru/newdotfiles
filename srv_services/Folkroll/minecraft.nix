@@ -1,6 +1,6 @@
 {pkgs, ...}: {
   systemd.services.minecraft_direwolf = {
-    enable = true;
+    enable = false;
     description = "Minecraft Direwolf Server";
     after = ["network-online.target"];
     serviceConfig = {

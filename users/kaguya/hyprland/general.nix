@@ -15,6 +15,7 @@
   };
 
   wayland.windowManager.hyprland.extraConfig = ''
+    exec-once = /etc/nixos/hosts/Mochizuki/init.sh
     general {
         # See https://wiki.hyprland.org/Configuring/Variables/ for more
 

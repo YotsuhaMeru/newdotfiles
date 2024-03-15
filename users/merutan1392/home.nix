@@ -88,6 +88,8 @@
         workspace_swipe = off
       }
 
+      windowrulev2 = opacity 0.80 0.80,class:^(kitty)$ 
+      windowrulev2 = opacity 0.90 0.90,class:^(emacs)$
 
       $mainMod = SUPER
       bind = $mainMod, Q, exec, kitty
@@ -249,6 +251,7 @@
         "width" = 1280;
         "spacing" = 4;
         "modules-left" = ["hyprland/workspaces"];
+        "modules-center" = ["hyprland/window"];
         "modules-right" = ["pulseaudio" "network" "temperature" "battery" "clock" "tray"];
         "keyboard-state" = {
           "numlock" = true;
@@ -327,6 +330,14 @@
         background-color: rgba(43, 48, 59, 0.5);
       }
 
+      #workspaces button {
+        background-color: #fed9ee;
+        color: #111111;
+        border-radius: 10px;
+        padding-left: 4px;
+        padding-right: 4px;
+      }
+
       #clock,
       #network,
       #temperature,
@@ -334,15 +345,15 @@
       #memory,
       #pulseaudio,
       #tray,
-      #workspaces button,
+      #window,
       #battery {
-        background-color: #fcc0e3;
+        background-color: #fed9ee;
         color: #111111;
         border-radius: 10px;
-        margin-top: 7px;
-        padding-left: 4px;
-        padding-right: 4px;
-        margin-right: 6px;
+        padding-top: 2px;
+        padding-bottom: 2px;
+        padding-left: 7px;
+        padding-right: 7px;
       }
     '';
   };

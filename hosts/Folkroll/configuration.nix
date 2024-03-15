@@ -60,6 +60,11 @@
     enableSSHSupport = true;
   };
 
+  services.mysql = {
+    enable = true;
+    package = pkgs.mariadb;
+  }; 
+
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
@@ -71,9 +76,9 @@
   };
 
   services.xserver = {
-    enable = true;
+    enable = false;
     displayManager = {
-      lightdm.enable = true;
+      lightdm.enable = false;
       defaultSession = "hyprland";
       autoLogin.enable = true;
       autoLogin.user = "kori";
@@ -96,6 +101,13 @@
       security = user
       usershare allow guests = no
       restrict anonymous = 2
+      read raw = Yes
+      write raw = Yes
+      socket options = TCP_NODELAY IPTOS_LOWDELAY SO_RCVBUF=131072 SO_SNDBUF=131072
+      min receivefile size = 16384
+      use sendfile = true
+      aio read size = 16384
+      aio write size = 16384
     '';
     shares = {
       kori = {
@@ -103,7 +115,7 @@
         browseable = "yes";
         "read only" = "no";
         "guest ok" = "no";
-        "create mask" = "0644";
+        "create mask" = "0755";
         "directory mask" = "0755";
         "valid users" = "kori";
       };
@@ -112,7 +124,7 @@
         browseable = "yes";
         "read only" = "no";
         "guest ok" = "no";
-        "create mask" = "0644";
+        "create mask" = "0755";
         "directory mask" = "0755";
         "valid users" = "kori";
       };
@@ -121,7 +133,25 @@
         browseable = "yes";
         "read only" = "no";
         "guest ok" = "no";
-        "create mask" = "0644";
+        "create mask" = "0755";
+        "directory mask" = "0755";
+        "valid users" = "kori";
+      };
+      chocolat = {
+        path = "/mnt/hdd/";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0755";
+        "directory mask" = "0755";
+        "valid users" = "kori";
+      };
+      aira = {
+        path = "/mnt/hdd2/";
+        browseable = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0755";
         "directory mask" = "0755";
         "valid users" = "kori";
       };
@@ -147,6 +177,7 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
+  networking.firewall.extraCommands = ''iptables -t raw -A OUTPUT -p udp -m udp --dport 137 -j CT --helper netbios-ns'';
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

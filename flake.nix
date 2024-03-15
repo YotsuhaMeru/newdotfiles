@@ -74,6 +74,59 @@
               })
             ];
           };
+          # Vultr
+          YunagiTown = self.nixos-flake.lib.mkLinuxSystem {
+            nixpkgs.hostPlatform = "x86_64-linux";
+            imports = [
+              self.nixosModules.common
+              ./hosts/YunagiTown/configuration.nix
+              inputs.disko.nixosModules.disko
+              inputs.home-manager.nixosModules.home-manager
+              ({
+                config,
+                pkgs,
+                ...
+              }: {
+                home-manager.users."kohana" = {
+                  imports = [
+                    ./users/kohana/home.nix
+                    ./etc/hmModules/starship.nix
+                    inputs.nixindb-stable.hmModules.nix-index
+                  ];
+                };
+              })
+            ];
+          };
+          # Chromebox
+          ChidamaGakuen = self.nixos-flake.lib.mkLinuxSystem {
+            nixpkgs.hostPlatform = "x86_64-linux";
+            imports = [
+              self.nixosModules.common
+              ./hosts/ChidamaGakuen
+              inputs.disko.nixosModules.disko
+              inputs.home-manager.nixosModules.home-manager
+              ({
+                config,
+                pkgs,
+                ...
+              }: {
+                home-manager.users."asumi" = {
+                  imports = [
+                    ./users/asumi/home.nix
+                    ./etc/hmModules/starship.nix
+                    inputs.nixindb-stable.hmModules.nix-index
+                  ];
+                };
+                home-manager.users."hiyori" = {
+                  imports = [
+                    ./users/hiyori/home.nix
+                    ./etc/hmModules/starship.nix
+                    inputs.nixindb-stable.hmModules.nix-index
+                  ];
+                };
+              })
+            ];
+          };
           # x240
           Stella = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";

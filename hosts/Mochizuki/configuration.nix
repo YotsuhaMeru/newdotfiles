@@ -46,6 +46,9 @@
     firefox
     tdesktop
     pavucontrol
+    swww
+    usbmuxd
+    vesktop
     discord
     (pkgs.makeDesktopItem {
       name = "discord";

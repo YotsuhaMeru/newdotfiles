@@ -30,7 +30,7 @@
   };
 
   systemd.services.kEnginePB = {
-    enable = true;
+    enable = false;
     description = "Discord bots(kEnginePB)";
     after = ["network-online.target"];
     serviceConfig = {
@@ -44,7 +44,7 @@
   };
 
   systemd.services.eewBot = {
-    enable = true;
+    enable = false;
     description = "Discord bots(eewBot)";
     after = ["network-online.target"];
     serviceConfig = {
