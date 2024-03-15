@@ -12,8 +12,14 @@
       "cafe-setaria.com".extraConfig = ''
          reverse_proxy http://127.0.0.1:8080
       '';
+      "redmine.cafe-setaria.com".extraConfig = ''
+         reverse_proxy http://127.0.0.1:3000
+      '';
     };
   };
+
+  services.redmine.enable = true;
+
   services.phpfpm.pools.pool = {
     user = "nobody";
     settings = {
@@ -103,7 +109,7 @@
 
   security.acme = {
     acceptTerms = true;
-    email = "merutan1392s@gmail.com";
+    defaults.email = "merutan1392s@gmail.com";
     certs = {
       "cafe-setaria.com".email = "merutan1392s@gmail.com";
     };
