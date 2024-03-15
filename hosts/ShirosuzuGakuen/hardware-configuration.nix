@@ -32,15 +32,15 @@
     fsType = "vfat";
   };
 
-  fileSystems."/mnt/hdd" = {
-    device = "/dev/disk/by-label/SubData";
-    fsType = "ntfs";
-  };
+  #fileSystems."/mnt/hdd" = {
+  #  device = "/dev/disk/by-label/SubData";
+  #  fsType = "ntfs";
+  #};
 
-  fileSystems."/mnt/hdd2" = {
-    device = "/dev/disk/by-uuid/c8ecd6c2-4467-4c7d-a76d-f116167268d3";
-    fsType = "ext4";
-  };
+  #fileSystems."/mnt/hdd2" = {
+  #  device = "/dev/disk/by-uuid/c8ecd6c2-4467-4c7d-a76d-f116167268d3";
+  #  fsType = "ext4";
+  #};
 
   swapDevices = [
     {device = "/dev/disk/by-uuid/6089d878-2901-455c-804e-0e8b9cedcd79";}
