@@ -3,20 +3,16 @@
   nixConfig.extra-experimental-features = "nix-command flakes";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-23.05";
-    nixos-2311.url = "github:nixos/nixpkgs/release-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs/release-23.11";
     nixos-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     hyprland.url = "github:hyprwm/Hyprland";
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.05";
+      url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager-unstable = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "/nixos-unstable";
-    };
-    home-manager-2311 = {
-      url = "github:nix-community/home-manager/release-23.11";
     };
     nur.url = "github:nix-community/nur";
     nixindb-stable = {
@@ -208,8 +204,8 @@
             ];
           };
           # Desktop
-          Mochizuki = inputs.nixos-2311.lib.nixosSystem {
-            system = "x86_64-linux";
+          Mochizuki = self.nixos-flake.lib.nixosSystem {
+            nixpkgs.hostPlatform = "x86_64-linux";
             modules = [
               self.nixosModules.common
               ./etc/fonts.nix
@@ -218,7 +214,7 @@
               ./etc/virtualization.nix
               ./hosts/Mochizuki/configuration.nix
               ./hosts/Mochizuki/hardware-configuration.nix
-              inputs.home-manager-2311.nixosModules.home-manager
+              inputs.home-manager.nixosModules.home-manager
               ({
                 config,
                 pkgs,
