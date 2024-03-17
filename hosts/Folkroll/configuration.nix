@@ -44,6 +44,8 @@
     libuuid
     recfsusb2n
     mirakurun
+    gst_all_1.gst-plugins-base
+    gst_all_1.gstreamer
   ];
 
   environment = {

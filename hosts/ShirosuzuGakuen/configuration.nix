@@ -24,6 +24,20 @@
     package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
+  systemd.services.SdBot = {
+    enable = false;
+    description = "Discord bots(sdbot)";
+    after = ["network-online.target"];
+    serviceConfig = {
+      RestartSec = "1000ms";
+      WorkingDirectory = "/srv/privdisbot/RazuBot-1/";
+      ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/RazuBot-1/index.js";
+      Restart = "always";
+      KillMode = "process";
+    };
+    wantedBy = ["multi-user.target"];
+  };
+
   services.xserver.videoDrivers = ["nvidia"];
 
   # Define a user account. Don't forget to set a password with epasswdf.
@@ -49,7 +63,9 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     firefox
-    #cudatoolkit
+    gst_all_1.gstreamer
+    gst_all_1.gst-plugins-base
+    cudaPackages_11_8.cudatoolkit
     python3
     screen
     nodejs_18
