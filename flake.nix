@@ -16,11 +16,11 @@
     };
     nur.url = "github:nix-community/nur";
     nixindb-stable = {
-      url = "github:Mic92/nix-index-database";
+      url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixindb-unstable = {
-      url = "github:Mic92/nix-index-database";
+      url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "/nixos-unstable";
     };
     deploy-rs.url = "github:serokell/deploy-rs";
