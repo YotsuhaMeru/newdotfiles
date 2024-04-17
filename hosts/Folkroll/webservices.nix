@@ -32,6 +32,11 @@
       "pm.max_spare_servers" = 5;
     };
   };
+  services.phpfpm.phpOptions = ''
+    upload_max_filesize = '5000M'
+    post_max_size = '5000M'
+    memory_limit = '6144M'
+  '';
   services.nginx.enable = true;
   services.nginx.defaultSSLListenPort = 8443;
   services.nginx.defaultHTTPListenPort = 8080;

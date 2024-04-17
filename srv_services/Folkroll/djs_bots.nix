@@ -18,7 +18,7 @@
     enable = true;
     description = "Discord bots(MusicBot)";
     after = ["network-online.target"];
-    path = [pkgs.ffmpeg-full];
+    path = [pkgs.ffmpeg-full pkgs.neofetch];
     serviceConfig = {
       RestartSec = "1000ms";
       WorkingDirectory = "/srv/privdisbot/Discord-Dejico-MusicBot/";

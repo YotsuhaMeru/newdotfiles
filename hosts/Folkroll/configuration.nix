@@ -19,7 +19,7 @@
   users.users.${config.var.username} = {
     isNormalUser = true;
     description = "Miyohashi Kori";
-    extraGroups = ["networkmanager" "wheel"];
+    extraGroups = ["networkmanager" "wheel" "video"];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOqSrimj4asWCxAbiR5I2d7qRc4wTbnatyU55yg5Ih1x kori@Folkroll"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPEN4dIHBHXEpMJN954xil+8lPbcoFqWO5dVFnLVwzZ2"
@@ -44,6 +44,7 @@
     libuuid
     recfsusb2n
     mirakurun
+    epgstation
     gst_all_1.gst-plugins-base
     gst_all_1.gstreamer
   ];
@@ -90,6 +91,29 @@
   services.cockpit = {
     enable = true;
   };
+
+  services.mirakurun = {
+    enable = true;
+    openFirewall = true;
+    tunerSettings = [ 
+      {
+        name = "KTV-FSUSB2N";
+        types = [ "GR" ];
+        command = "${pkgs.recfsusb2n}/bin/recfsusb2n -b25 <channel> - -";
+      }
+    ];
+  };
+
+  services.epgstation = {
+    enable = true;
+    openFirewall = true;
+    database.passwordFile = "/srv/key";
+    settings.mirakurunPath = "http://127.0.0.1:40772";
+  };
+
+  services.udev.extraRules = ''
+  SUBSYSTEM=="usb", ENV{DEVTYPE}=="usb_device", ATTRS{idVendor}=="0511", ATTRS{idProduct}=="0029", MODE="0664", GROUP="video"
+  '';
 
   services.samba-wsdd.enable = true;
   services.samba = {
