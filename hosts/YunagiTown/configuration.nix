@@ -44,6 +44,7 @@
       description = "Kohana";
       extraGroups = ["wheel"];
       shell = pkgs.fish;
+      password = "defaultpassword";
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIG/SC3fS/8k2QExSVJyytXOWhO1W2GSeRQJ3eq4a/5gn kohana@YunagiTown"
       ];

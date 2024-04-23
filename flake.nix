@@ -71,13 +71,13 @@
             ];
           };
           # Vultr
-          YunagiTown = self.nixos-flake.lib.mkLinuxSystem {
-            nixpkgs.hostPlatform = "x86_64-linux";
-            imports = [
+          YunagiTown = inputs.nixos-unstable.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [
               self.nixosModules.common
               ./hosts/YunagiTown/configuration.nix
               inputs.disko.nixosModules.disko
-              inputs.home-manager.nixosModules.home-manager
+              inputs.home-manager-unstable.nixosModules.home-manager
               ({
                 config,
                 pkgs,
@@ -254,6 +254,26 @@
                     inputs.nixindb-stable.hmModules.nix-index
                   ];
                 };
+              })
+            ];
+          };
+          iso = inputs.nixos-unstable.lib.nixosSystem {
+            modules = [
+              "${inputs.nixos-unstable}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
+              self.nixosModules.common
+              ({pkgs, lib, ...}: {
+                nixpkgs.hostPlatform = "x86_64-linux";
+                users.users.nixos.openssh.authorizedKeys.keys = [
+                  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHBdCFoasNYvWwXHCiXamRIdiQCJK21lmxv5rGLPsB3v kohana@YunagiTown"
+                ];
+                zramSwap = {
+                  enable = true;
+                  memoryPercent = 100;
+                };
+                networking.wireless.enable = lib.mkForce false;
+                environment.systemPackages = with pkgs; [
+                  rsync
+                ];
               })
             ];
           };

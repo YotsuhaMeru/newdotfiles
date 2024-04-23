@@ -84,4 +84,17 @@
     };
     wantedBy = ["multi-user.target"];
   };
+  systemd.services.r-notify = {
+    enable = true;
+    description = "Discord bots(r-notify)";
+    after = ["network-online.target"];
+    serviceConfig = {
+      RestartSec = "1000ms";
+      WorkingDirectory = "/srv/privdisbot/r-notify/";
+      ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/r-notify/index.js";
+      Restart = "always";
+      KillMode = "process";
+    };
+    wantedBy = ["multi-user.target"];
+  };
 }
