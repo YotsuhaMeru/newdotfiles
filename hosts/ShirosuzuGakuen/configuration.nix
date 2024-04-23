@@ -21,7 +21,11 @@
 
   hardware.nvidia = {
     modesetting.enable = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    open = false;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
   systemd.services.SdBot = {
@@ -65,7 +69,8 @@
     firefox
     gst_all_1.gstreamer
     gst_all_1.gst-plugins-base
-    cudaPackages_11_8.cudatoolkit
+    cudaPackages_12_1.cudatoolkit
+    nvtop
     python3
     screen
     nodejs_18
@@ -179,7 +184,7 @@
   systemd.targets.hybrid-sleep.enable = false;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 7860 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
