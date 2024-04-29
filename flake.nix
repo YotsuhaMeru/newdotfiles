@@ -312,6 +312,7 @@
               ./cachix
               ./hosts/general.nix
               ./etc/globalvars.nix
+              ./etc/sshconf.nix
             ];
 
           };
