@@ -104,6 +104,16 @@
     ];
   };
 
+  virtualisation = {
+    podman = {
+      enable = true;
+      dockerCompat = true;
+      defaultNetwork.settings.dns_enabled = true;
+    };
+    # Use podman instead of docker
+    oci-containers.backend = "podman";
+  };
+
   services.epgstation = {
     enable = true;
     openFirewall = true;
