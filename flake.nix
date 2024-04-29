@@ -241,6 +241,7 @@
               self.nixosModules.common
               ./hosts/ShirosuzuGakuen/configuration.nix
               ./hosts/ShirosuzuGakuen/hardware-configuration.nix
+              ./etc/windows.nix
               inputs.home-manager.nixosModules.home-manager
               ({
                 config,
