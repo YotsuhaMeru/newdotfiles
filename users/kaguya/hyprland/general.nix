@@ -63,10 +63,5 @@
       kb_layout = jp
     }
 
-    # Example per-device config
-    # See https://wiki.hyprland.org/Configuring/Keywords/#executing for more
-    device:epic-mouse-v1 {
-        sensitivity = -0.5
-    }
   '';
 }
