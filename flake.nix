@@ -123,6 +123,35 @@
               })
             ];
           };
+          # ATrust mt182
+          YurigamineGakuen = inputs.nixos-unstable.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [
+              self.nixosModules.common
+              ./etc/fonts.nix
+              ./etc/distributedBuilds.nix
+              ./etc/wine.nix
+              ./etc/hyprland.nix
+              ./hosts/YurigamineGakuen
+              inputs.disko.nixosModules.disko
+              inputs.home-manager-unstable.nixosModules.home-manager
+              ({config, pkgs, ...}: {
+                home-manager.users."ririko" = {
+                  imports = [
+                    ./users/ririko/home.nix
+                    # from natsume
+                    ./users/natsume/waybar.nix
+                    ./etc/hmModules/starship.nix
+                    ./etc/hmModules/ime.nix
+                    ./etc/hmModules/hyprland
+                    # from kaguya
+                    ./users/kaguya/hyprland
+                    inputs.nixindb-unstable.hmModules.nix-index
+                  ];
+                };
+              }) 
+            ];
+          };
           # x240
           Stella = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";
@@ -143,7 +172,7 @@
                     ./etc/hmModules/starship.nix
                     ./etc/hmModules/ime.nix
                     ./etc/hmModules/hyprland
-                    # kaguya
+                    # from kaguya
                     ./users/kaguya/hyprland
                     inputs.nixindb-unstable.hmModules.nix-index
                   ];

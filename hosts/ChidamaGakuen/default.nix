@@ -50,7 +50,7 @@
       description = "Nishiki Asumi";
       extraGroups = ["wheel"];
       shell = pkgs.fish;
-      password = "defaultpassword";
+      initialPassword = "defaultpassword";
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPPkFm9YWn09p5GyYGImAz/lvPkeAjgu+ueOnJmdwDh0 Asumi@ChidamaGakuen"
       ];
@@ -60,7 +60,7 @@
       description = "Izumi Hiyori";
       extraGroups = ["wheel"];
       shell = pkgs.fish;
-      password = "alpinerickroll";
+      initialPassword = "alpinerickroll";
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIP9QP7hABDQ+esrZnDhQulFfrhfuT8cPmREYvtPRzjF4 93813719+nyawox@users.noreply.github.com"
       ];
