@@ -77,6 +77,11 @@
     };
   };
 
+  environment.systemPackages = with pkgs; [
+    moonlight-qt
+    firefox
+  ];
+
   system.stateVersion = "24.05";
   
 }
