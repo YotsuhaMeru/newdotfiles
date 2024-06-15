@@ -1,14 +1,19 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+_: {
   home = {
     username = "kori";
     homeDirectory = "/home/kori";
+    stateVersion = "23.05";
   };
 
-  programs.fish.enable = true;
+  programs = {
+    fish.enable = true;
+    direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
+
+    home-manager.enable = true;
+  };
 
   # wayland.windowManager.hyprland = {
   #  enable = true;
@@ -18,12 +23,4 @@
   #    monitor = ,1366x768@60,auto,auto
   #  '';
   #};
-
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
-
-  home.stateVersion = "23.05";
-  programs.home-manager.enable = true;
 }

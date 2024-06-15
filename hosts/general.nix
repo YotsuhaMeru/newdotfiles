@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -26,7 +22,6 @@
 
   # set default shell
   users.defaultUserShell = pkgs.fish;
-  programs.fish.enable = true;
 
   environment.variables.EDITOR = "vim";
 
@@ -37,15 +32,18 @@
     git
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  programs.mtr.enable = true;
+  programs = {
+    fish.enable = true;
+    # Some programs need SUID wrappers, can be configured further or are
+    # started in user sessions.
+    mtr.enable = true;
 
-  # GTK2 fallback to ncurses when gui isn't available
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-    # pinentryFlavor = "gtk2";
+    # GTK2 fallback to ncurses when gui isn't available
+    gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+      # pinentryFlavor = "gtk2";
+    };
   };
 
   # Set your time zone.

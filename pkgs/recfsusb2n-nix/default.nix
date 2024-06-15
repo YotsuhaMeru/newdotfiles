@@ -22,4 +22,3 @@ stdenv.mkDerivation {
   '';
   patches = [./http.patch];
 }
-

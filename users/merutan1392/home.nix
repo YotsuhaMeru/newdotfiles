@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
   home = {
@@ -88,7 +84,7 @@
         workspace_swipe = off
       }
 
-      windowrulev2 = opacity 0.80 0.80,class:^(kitty)$ 
+      windowrulev2 = opacity 0.80 0.80,class:^(kitty)$
       windowrulev2 = opacity 0.90 0.90,class:^(emacs)$
 
       $mainMod = SUPER

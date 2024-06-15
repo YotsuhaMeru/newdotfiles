@@ -1,12 +1,11 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{
-  config,
-  pkgs,
-  ...
-}: {
-  networking.hostName = "Sweettail";
+{pkgs, ...}: let
+  hostname = "Sweettail";
+  username = "ichika";
+in {
+  networking.hostName = hostname;
 
   console = {
     font = "Lat2-Terminus16";
@@ -32,22 +31,33 @@
   environment.pathsToLink = ["/libexec"];
 
   # Enable touchpad support (enabled default in most desktopManager).
-  services.xserver.libinput.enable = true;
-  services.xserver = {
-    enable = true;
-    windowManager.i3 = {
+  services = {
+    xserver = {
+      libinput.enable = true;
       enable = true;
-      extraPackages = with pkgs; [
-        dmenu
-        i3status
-        i3lock
-      ];
+      windowManager.i3 = {
+        enable = true;
+        extraPackages = with pkgs; [
+          dmenu
+          i3status
+          i3lock
+        ];
+      };
+    };
+    # Enable the OpenSSH daemon.
+    services.openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "no";
+      };
     };
   };
 
-  var.username = "ichika";
+  var.username = username;
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.ichika = {
+  users.users.${username} = {
     isNormalUser = true;
     description = "Misono Ichika";
     extraGroups = ["networkmanager " "wheel"];
@@ -78,13 +88,6 @@
 
   # List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    settings.PasswordAuthentication = false;
-    settings.KbdInteractiveAuthentication = false;
-    settings.PermitRootLogin = "no";
-  };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];

@@ -1,8 +1,8 @@
-{pkgs, ...}: {
+_: {
   programs.waybar = {
     enable = true;
     systemd.enable = false;
-     settings = [
+    settings = [
       {
         "layer" = "top";
         "position" = "bottom";

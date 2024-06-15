@@ -1,54 +1,61 @@
 {
- config,
- pkgs,
- lib,
- ...
-}: 
-{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
+  hostname = "YurigamineGakuen";
+  username = "ririko";
+in {
   imports = [
     ./disko-config.nix
   ];
 
-  boot.initrd.availableKernelModules = ["xhci_pci" "usbhid" "usb_storage" "sd_mod" "sdhci_acpi" ];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-intel"];
-  boot.extraModulePackages = [];
-  boot.loader = {
-    timeout = 0;
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+  boot = {
+    initrd.availableKernelModules = ["xhci_pci" "usbhid" "usb_storage" "sd_mod" "sdhci_acpi"];
+    initrd.kernelModules = [];
+    kernelModules = ["kvm-intel"];
+    extraModulePackages = [];
+    loader = {
+      timeout = 0;
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
   };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.enableAllFirmware = true;
-  hardware.enableRedistributableFirmware = true;
-
-  nixpkgs.config.packageOverrides = pkgs: {
-    intel-vaapi-driver = pkgs.intel-vaapi-driver.override { enableHybridCodec = true; };
-  };
-
-  hardware.opengl = {
-    enable = true;
-    extraPackages = with pkgs; [
-      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-      libvdpau-va-gl
-    ];
-  };
-
-  environment.sessionVariables = { LIBVA_DRIVER_NAME = "i965"; }; # Force intel-media-driver
-
-  networking.hostName = "YurigamineGakuen";
-  networking.useDHCP = lib.mkDefault true;
-  networking.networkmanager = {
-    enable = true;
-    connectionConfig = {
-      "connection.mdns" = 2;
-      "connection.llmnr" = 0;
+  hardware = {
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    enableAllFirmware = true;
+    enableRedistributableFirmware = true;
+    opengl = {
+      enable = true;
+      extraPackages = with pkgs; [
+        intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+        libvdpau-va-gl
+      ];
     };
   };
-  networking.firewall.enable = true;
-   
+
+  nixpkgs.config.packageOverrides = pkgs: {
+    intel-vaapi-driver = pkgs.intel-vaapi-driver.override {enableHybridCodec = true;};
+  };
+
+  environment.sessionVariables = {LIBVA_DRIVER_NAME = "i965";}; # Force intel-media-driver
+
+  networking = {
+    hostName = hostname;
+    useDHCP = lib.mkDefault true;
+    networkmanager = {
+      enable = true;
+      connectionConfig = {
+        "connection.mdns" = 2;
+        "connection.llmnr" = 0;
+      };
+    };
+    firewall.enable = true;
+  };
+
   services.openssh = {
     enable = true;
     settings.PermitRootLogin = "no";
@@ -62,10 +69,10 @@
     pulse.enable = true;
   };
 
-  var.username = "ririko";
+  var.username = username;
 
   users = {
-    users."ririko" = {
+    users.${username} = {
       isNormalUser = true;
       description = "Hijiri Ririko";
       extraGroups = ["wheel"];
@@ -83,5 +90,4 @@
   ];
 
   system.stateVersion = "24.05";
-  
 }

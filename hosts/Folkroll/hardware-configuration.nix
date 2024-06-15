@@ -13,36 +13,40 @@
   ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-intel"];
-  boot.extraModulePackages = [];
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot = {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    initrd.availableKernelModules = ["xhci_pci" "ahci" "nvme" "usbhid" "usb_storage" "sd_mod"];
+    initrd.kernelModules = [];
+    kernelModules = ["kvm-intel"];
+    extraModulePackages = [];
+    kernelPackages = pkgs.linuxPackages_latest;
 
-  boot.extraModprobeConfig = ''
-    options snd slots=snd-hda-intel
-  '';
-
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/2f57a18e-ef09-46f5-a271-95f3b4595c8a";
-    fsType = "xfs";
+    extraModprobeConfig = ''
+      options snd slots=snd-hda-intel
+    '';
   };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/942E-4BC7";
-    fsType = "vfat";
-  };
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/2f57a18e-ef09-46f5-a271-95f3b4595c8a";
+      fsType = "xfs";
+    };
 
-  fileSystems."/mnt/hdd" = {
-    device = "/dev/disk/by-label/SubData";
-    fsType = "ntfs";
-  };
+    "/boot" = {
+      device = "/dev/disk/by-uuid/942E-4BC7";
+      fsType = "vfat";
+    };
 
-  fileSystems."/mnt/hdd2" = {
-    device = "/dev/disk/by-uuid/c8ecd6c2-4467-4c7d-a76d-f116167268d3";
-    fsType = "ext4";
+    "/mnt/hdd" = {
+      device = "/dev/disk/by-label/SubData";
+      fsType = "ntfs";
+    };
+
+    "/mnt/hdd2" = {
+      device = "/dev/disk/by-uuid/c8ecd6c2-4467-4c7d-a76d-f116167268d3";
+      fsType = "ext4";
+    };
   };
 
   swapDevices = [{device = "/dev/disk/by-uuid/4d538c4d-9ca3-452e-9e64-026efd9e57d8";}];

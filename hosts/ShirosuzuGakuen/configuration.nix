@@ -1,13 +1,12 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running enixos-helpf).
 {
   config,
   pkgs,
+  lib,
   ...
-}: {
-  networking.hostName = "ShirosuzuGakuen"; # Define your hostname.
-
+}: let
+  hostname = "ShirosuzuGakuen"; # Define your hostname.
+  username = "minato";
+in {
   console = {
     font = "Lat2-Terminus16";
     keyMap = "jp106";
@@ -28,41 +27,54 @@
     package = config.boot.kernelPackages.nvidiaPackages.production;
   };
 
-  systemd.services.SdBot = {
-    enable = false;
-    description = "Discord bots(sdbot)";
-    after = ["network-online.target"];
-    serviceConfig = {
-      RestartSec = "1000ms";
-      WorkingDirectory = "/srv/privdisbot/RazuBot-1/";
-      ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/RazuBot-1/index.js";
-      Restart = "always";
-      KillMode = "process";
+  systemd = {
+    services = {
+      SdBot = {
+        enable = false;
+        description = "Discord bots(sdbot)";
+        after = ["network-online.target"];
+        serviceConfig = {
+          RestartSec = "1000ms";
+          WorkingDirectory = "/srv/privdisbot/RazuBot-1/";
+          ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/RazuBot-1/index.js";
+          Restart = "always";
+          KillMode = "process";
+        };
+        wantedBy = ["multi-user.target"];
+      };
+      arion-ollama = {
+        wants = ["network-online.target"];
+        after = ["network-online.target"];
+      };
     };
-    wantedBy = ["multi-user.target"];
+    targets = {
+      sleep.enable = false;
+      suspend.enable = false;
+      hibernate.enable = false;
+      hybrid-sleep.enable = false;
+    };
   };
 
-  services.xserver.videoDrivers = ["nvidia"];
-
-  # Define a user account. Don't forget to set a password with epasswdf.
-  var.username = "minato";
-  users = {
-    users.minato = {
+  var.username = username;
+  # Define a user account. Don't forget to set a password with passwd.
+  users.users = {
+    ${username} = {
       isNormalUser = true;
       description = "Asuka Minato";
-      extraGroups = ["wheel"]; # Enable esudof for the user.
+      extraGroups = ["wheel"]; # Enable `sudo` for the user.
       shell = pkgs.fish;
       openssh.authorizedKeys.keys = [
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDQEd6x7x71UyE0AQOF9Www22mUm/eScmL1zHkOUIYJP minato@ShirosuzuGakuen"
       ];
     };
-    users.hinata = {
+    hinata = {
       isNormalUser = true;
     };
-    users.yuzu = {
+    yuzu = {
       isNormalUser = true;
     };
   };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -88,13 +100,108 @@
 
   # List services that you want to enable:
 
-  # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    permitRootLogin = "no";
-    passwordAuthentication = false;
+  services = {
+    xserver.videoDrivers = ["nvidia"];
+
+    # Enable the OpenSSH daemon.
+    openssh = {
+      enable = true;
+      permitRootLogin = "no";
+      passwordAuthentication = false;
+    };
+    samba-wsdd.enable = true;
+    resolved = {
+      enable = true;
+      extraConfig = ''
+        LLMNR=false
+        ReadEtcHosts=false
+        MulticastDNS=true
+      '';
+    };
+
+    frp = {
+      enable = true;
+      role = "client";
+      settings = {
+        common = {
+          server_addr = "192.168.0.134";
+          server_port = 7154;
+        };
+        proxies = {
+          name = "ollama";
+          type = "tcp";
+          local_ip = "127.0.0.1";
+          local_port = 11451;
+          remote_port = 11451;
+        };
+      };
+    };
+
+    memcached = {
+      enable = true;
+      maxMemory = 128;
+    };
+
+    jellyfin.enable = true;
+
+    samba = {
+      enable = false;
+      securityType = "user";
+      extraConfig = ''
+        workgroup = WORKGROUP
+        server string = shirosuzugakuen
+        netbios name = shirosuzugakuen
+        security = user
+        usershare allow guests = no
+        restrict anonymous = 2
+        read raw = Yes
+        write raw = Yes
+        socket options = TCP_NODELAY IPTOS_LOWDELAY SO_RCVBUF=131072 SO_SNDBUF=131072
+        min receivefile size = 16384
+        use sendfile = true
+        aio read size = 16384
+        aio write size = 16384
+      '';
+      shares = {
+        kazari = {
+          path = "/mnt/hdd/";
+          browseable = "yes";
+          "read only" = "no";
+          "guest ok" = "no";
+          "create mask" = "0755";
+          "directory mask" = "0755";
+          "valid users" = "minato";
+          "invalid users" = "hinata";
+        };
+        hinata = {
+          path = "/mnt/hdd2/";
+          browseable = "yes";
+          "read only" = "no";
+          "guest ok" = "no";
+          "create mask" = "0755";
+          "directory mask" = "0755";
+          "valid users" = "minato";
+          "invalid users" = "hinata";
+        };
+        VN_Share = {
+          path = "/mnt/hdd/Share/iso/VN_Share/";
+          browseable = "yes";
+          "read only" = "yes";
+          "guest ok" = "no";
+          "valid users" = "minato, hinata";
+        };
+        nanami = {
+          path = "/mnt/hdd/Share/rwshare/";
+          browseable = "yes";
+          "read only" = "no";
+          "guest ok" = "no";
+          "create mask" = "0644";
+          "directory mask" = "0755";
+          "valid users" = "minato, yuzu";
+        };
+      };
+    };
   };
-  services.samba-wsdd.enable = true;
 
   virtualisation = {
     podman = {
@@ -116,16 +223,13 @@
             };
           };
         };
-
         services.ollama = {
           out.service = {
-            deploy.resources.reservations.devices = [
-              {
-                driver = "nvidia";
-                count = 1;
-                capabilities = ["gpu"];
-              }
-            ];
+            deploy.resources.reservations.devices = lib.singleton {
+              driver = "nvidia";
+              count = 1;
+              capabilities = ["gpu"];
+            };
           };
           service = {
             image = "ollama/ollama:latest";
@@ -145,130 +249,32 @@
       };
     };
   };
-  systemd.services.arion-ollama = {
-    wants = ["network-online.target"];
-    after = ["network-online.target"];
-  };
 
-  services.resolved = {
-    enable = true;
-    extraConfig = ''
-      LLMNR=false
-      ReadEtcHosts=false
-      MulticastDNS=true
-    '';
-  };
+  networking = {
+    hostName = hostname;
 
-  services.frp = {
-    enable = true;
-    role = "client";
-    settings = {
-      common = {
-        server_addr = "192.168.0.134";
-        server_port = 7154;
-      };
-      proxies = {
-        name = "ollama";
-        type = "tcp";
-        local_ip = "127.0.0.1";
-        local_port = 11451;
-        remote_port = 11451;
+    networkmanager = {
+      enable = true;
+      connectionConfig = {
+        "connection.mdns" = 2;
+        "connection.llmnr" = 0;
       };
     };
-  };
-
-  networking.networkmanager = {
-    enable = true;
-    connectionConfig = {
-      "connection.mdns" = 2;
-      "connection.llmnr" = 0;
+    firewall = {
+      enable = true;
+      extraCommands = ''
+        iptables -A INPUT -p tcp --destination-port 53 -s 172.26.0.0/16 -j ACCEPT
+        iptables -A INPUT -p udp --destination-port 53 -s 172.26.0.0/16 -j ACCEPT
+      '';
+      # Open ports in the firewall.
+      allowedTCPPorts = [7860 11451];
+      # allowedUDPPorts = [ ... ];
     };
   };
-
-  services.memcached = {
-    enable = true;
-    maxMemory = 128;
-  };
-
-  services.jellyfin.enable = true;
-
-  services.samba = {
-    enable = false;
-    securityType = "user";
-    extraConfig = ''
-      workgroup = WORKGROUP
-      server string = shirosuzugakuen
-      netbios name = shirosuzugakuen
-      security = user
-      usershare allow guests = no
-      restrict anonymous = 2
-      read raw = Yes
-      write raw = Yes
-      socket options = TCP_NODELAY IPTOS_LOWDELAY SO_RCVBUF=131072 SO_SNDBUF=131072
-      min receivefile size = 16384
-      use sendfile = true
-      aio read size = 16384
-      aio write size = 16384
-    '';
-    shares = {
-      kazari = {
-        path = "/mnt/hdd/";
-        browseable = "yes";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0755";
-        "directory mask" = "0755";
-        "valid users" = "minato";
-        "invalid users" = "hinata";
-      };
-      hinata = {
-        path = "/mnt/hdd2/";
-        browseable = "yes";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0755";
-        "directory mask" = "0755";
-        "valid users" = "minato";
-        "invalid users" = "hinata";
-      };
-      VN_Share = {
-        path = "/mnt/hdd/Share/iso/VN_Share/";
-        browseable = "yes";
-        "read only" = "yes";
-        "guest ok" = "no";
-        "valid users" = "minato, hinata";
-      };
-      nanami = {
-        path = "/mnt/hdd/Share/rwshare/";
-        browseable = "yes";
-        "read only" = "no";
-        "guest ok" = "no";
-        "create mask" = "0644";
-        "directory mask" = "0755";
-        "vaild users" = "minato, yuzu";
-      };
-    };
-  };
-  networking.firewall.extraCommands = ''
-      iptables -A INPUT -p tcp --destination-port 53 -s 172.26.0.0/16 -j ACCEPT
-      iptables -A INPUT -p udp --destination-port 53 -s 172.26.0.0/16 -j ACCEPT
-    '';
-  };
-
-  systemd.targets.sleep.enable = false;
-  systemd.targets.suspend.enable = false;
-  systemd.targets.hibernate.enable = false;
-  systemd.targets.hybrid-sleep.enable = false;
-
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 7860 11451 ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
-  # on your system were taken. Ites perfectly fine and recommended to leave
+  # on your system were taken. It's perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).

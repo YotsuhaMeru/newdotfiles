@@ -1,45 +1,46 @@
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
-  networking.hostName = "Mochizuki"; # Define your hostname.
-
-  # Configure keymap in X11
-  services.xserver = {
-    layout = "jp";
-    xkbVariant = "";
-  };
-
-
+{pkgs, ...}: let
+  hostname = "Mochizuki"; # Define your hostname.
+  username = "kaguya";
+in {
   # Configure console keymap
   console.keyMap = "jp106";
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  services = {
+    xserver = {
+      # Configure keymap in X11
+      layout = "jp";
+      xkbVariant = "";
+      # Enable the X11 windowing system.
+      enable = true;
+      displayManager.gdm.autoSuspend = false;
+      # Enable the GNOME Desktop Environment.
+      displayManager.gdm.enable = false;
+      desktopManager.gnome.enable = true;
+    };
+    blueman.enable = true;
+    pipewire = {
+      enable = true;
+      audio.enable = true;
+      wireplumber.enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+    openssh = {
+      enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        KbdInteractiveAuthentication = false;
+        PermitRootLogin = "no";
+      };
+    };
+  };
 
-  services.xserver.displayManager.gdm.autoSuspend = false;
   programs.hyprland.enableNvidiaPatches = false;
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = false;
-  services.xserver.desktopManager.gnome.enable = true;
-
-  services.blueman.enable = true;
 
   hardware.pulseaudio.enable = false;
   sound.enable = true;
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    audio.enable = true;
-    wireplumber.enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
-
   environment.sessionVariables."NIXOS_OZONE_WL" = "1";
 
   environment.systemPackages = with pkgs; [
@@ -64,8 +65,8 @@
     dedicatedServer.openFirewall = true;
   };
 
-  var.username = "kaguya";
-  users.users.kaguya = {
+  var.username = username;
+  users.users.${username} = {
     isNormalUser = true;
     description = "Momose Kaguya";
     extraGroups = ["networkmanager" "wheel"]; # Enable ‘sudo’ for the user.
@@ -75,21 +76,22 @@
     ];
   };
 
-  services.openssh = {
-    enable = true;
-    settings.PasswordAuthentication = false;
-    settings.KbdInteractiveAuthentication = false;
-    settings.PermitRootLogin = "no";
+  networking = {
+    hostName = hostname;
+    firewall = {
+      enable = true;
+      # Open ports in the firewall.
+      # allowedTCPPorts = [ ... ];
+      # allowedUDPPorts = [ ... ];
+    };
   };
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  networking.firewall.enable = true;
 
-  systemd.targets.sleep.enable = false;
-  systemd.targets.suspend.enable = false;
-  systemd.targets.hibernate.enable = false;
-  systemd.targets.hybrid-sleep.enable = false;
+  systemd.targets = {
+    sleep.enable = false;
+    suspend.enable = false;
+    targets.hibernate.enable = false;
+    targets.hybrid-sleep.enable = false;
+  };
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

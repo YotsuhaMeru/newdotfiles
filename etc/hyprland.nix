@@ -1,29 +1,25 @@
-{
-  lib,
-  pkgs,
-  config,
-  ...
-}: {
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
+{pkgs, ...}: {
   programs.hyprland = {
     enable = true;
     xwayland.enable = true;
   };
+  services = {
+    # Enable the X11 windowing system.
+    xserver.enable = true;
 
-  services.dbus.enable = true;
+    dbus.enable = true;
 
-  services.xserver.displayManager = {
-    sddm = {
-      enable = true;
-      enableHidpi = false;
-      autoNumlock = true;
-      wayland.enable = true;
-      theme = "catppuccin-mocha";
+    xserver.displayManager = {
+      sddm = {
+        enable = true;
+        enableHidpi = false;
+        autoNumlock = true;
+        wayland.enable = true;
+        theme = "catppuccin-mocha";
+      };
+      defaultSession = "hyprland";
+      sessionPackages = [pkgs.hyprland];
     };
-    defaultSession = "hyprland";
-    sessionPackages = [pkgs.hyprland];
   };
 
   environment.systemPackages = with pkgs; [
@@ -40,7 +36,6 @@
     xdg-desktop-portal-gtk
     xdg-desktop-portal-hyprland
   ];
-
 
   xdg.portal.enable = true;
 }

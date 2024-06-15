@@ -12,35 +12,39 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod"];
-  boot.initrd.kernelModules = [ "amdgpu" ];
-  boot.kernelModules = ["kvm-intel"];
-  boot.kernelParams = ["intel_iommu=on"];
-  boot.supportedFilesystems = [ "ntfs" ];
-  boot.extraModulePackages = [];
-  boot.extraModprobeConfig = "options kvm_intel nested=1";
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  fileSystems."/" = {
-    device = "/dev/disk/by-label/Mochizuki";
-    fsType = "xfs";
+  boot = {
+    loader.systemd-boot.enable = true;
+    loader.efi.canTouchEfiVariables = true;
+    initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod"];
+    initrd.kernelModules = ["amdgpu"];
+    kernelModules = ["kvm-intel"];
+    kernelParams = ["intel_iommu=on"];
+    supportedFilesystems = ["ntfs"];
+    extraModulePackages = [];
+    extraModprobeConfig = "options kvm_intel nested=1";
+    kernelPackages = pkgs.linuxPackages_latest;
   };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-label/EFI";
-    fsType = "vfat";
-  };
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-label/Mochizuki";
+      fsType = "xfs";
+    };
 
-  fileSystems."/mnt/hdd" = {
-    device = "/dev/disk/by-label/Data";
-    fsType = "ntfs-3g";
-    options = [ "rw" ];
+    "/boot" = {
+      device = "/dev/disk/by-label/EFI";
+      fsType = "vfat";
+    };
+
+    "/mnt/hdd" = {
+      device = "/dev/disk/by-label/Data";
+      fsType = "ntfs-3g";
+      options = ["rw"];
+    };
   };
 
   swapDevices = [
-  #  {device = "/dev/disk/by-uuid/f80b8840-b6af-4b3f-9967-da937ecf71bc";}
+    #  {device = "/dev/disk/by-uuid/f80b8840-b6af-4b3f-9967-da937ecf71bc";}
   ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
@@ -50,15 +54,18 @@
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
 
-  hardware.enableAllFirmware = true;
+  hardware = {
+    enableAllFirmware = true;
 
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true;
+    bluetooth.enable = true;
+    bluetooth.powerOnBoot = true;
 
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
+    opengl = {
+      enable = true;
+      driSupport = true;
+      driSupport32Bit = true;
+    };
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 
   # Load nvidia driver for Xorg and Wayland
@@ -66,5 +73,4 @@
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

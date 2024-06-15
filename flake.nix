@@ -53,11 +53,7 @@
               ./srv_services/Folkroll
               ./hosts/Folkroll/webservices.nix
               inputs.home-manager.nixosModules.home-manager
-              ({
-                config,
-                pkgs,
-                ...
-              }: {
+              (_: {
                 home-manager.users."kori" = {
                   imports = [
                     # inputs.hyprland.homeManagerModules.default
@@ -78,11 +74,7 @@
               ./hosts/YunagiTown/configuration.nix
               inputs.disko.nixosModules.disko
               inputs.home-manager-unstable.nixosModules.home-manager
-              ({
-                config,
-                pkgs,
-                ...
-              }: {
+              (_: {
                 home-manager.users."kohana" = {
                   imports = [
                     ./users/kohana/home.nix
@@ -101,11 +93,7 @@
               ./hosts/ChidamaGakuen
               inputs.disko.nixosModules.disko
               inputs.home-manager.nixosModules.home-manager
-              ({
-                config,
-                pkgs,
-                ...
-              }: {
+              (_: {
                 home-manager.users."asumi" = {
                   imports = [
                     ./users/asumi/home.nix
@@ -135,7 +123,7 @@
               ./hosts/YurigamineGakuen
               inputs.disko.nixosModules.disko
               inputs.home-manager-unstable.nixosModules.home-manager
-              ({config, pkgs, ...}: {
+              (_: {
                 home-manager.users."ririko" = {
                   imports = [
                     ./users/ririko/home.nix
@@ -149,7 +137,7 @@
                     inputs.nixindb-unstable.hmModules.nix-index
                   ];
                 };
-              }) 
+              })
             ];
           };
           # x240
@@ -164,7 +152,7 @@
               ./hosts/Stella
               inputs.disko.nixosModules.disko
               inputs.home-manager-unstable.nixosModules.home-manager
-              ({config, pkgs, ...}: {
+              (_: {
                 home-manager.users."natsume" = {
                   imports = [
                     ./users/natsume/home.nix
@@ -190,11 +178,7 @@
               ./hosts/NixbookAir/configuration.nix
               ./hosts/NixbookAir/hardware-configuration.nix
               inputs.home-manager-unstable.nixosModules.home-manager
-              ({
-                config,
-                pkgs,
-                ...
-              }: {
+              (_: {
                 home-manager.users."merutan1392" = {
                   imports = [
                     ./users/merutan1392/home.nix
@@ -216,11 +200,7 @@
               ./hosts/Sweettail/configuration.nix
               ./hosts/Sweettail/hardware-configuration.nix
               inputs.home-manager-unstable.nixosModules.home-manager
-              ({
-                config,
-                pkgs,
-                ...
-              }: {
+              (_: {
                 home-manager.users."ichika" = {
                   imports = [
                     ./users/ichika/home.nix
@@ -244,11 +224,7 @@
               ./hosts/Mochizuki/configuration.nix
               ./hosts/Mochizuki/hardware-configuration.nix
               inputs.home-manager.nixosModules.home-manager
-              ({
-                config,
-                pkgs,
-                ...
-              }: {
+              (_: {
                 home-manager.users."kaguya" = {
                   imports = [
                     ./users/kaguya/home.nix
@@ -272,11 +248,7 @@
               ./hosts/ShirosuzuGakuen/hardware-configuration.nix
               ./etc/windows.nix
               inputs.home-manager.nixosModules.home-manager
-              ({
-                config,
-                pkgs,
-                ...
-              }: {
+              (_: {
                 home-manager.users."minato" = {
                   imports = [
                     ./users/minato/home.nix
@@ -291,7 +263,11 @@
             modules = [
               "${inputs.nixos-unstable}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
               self.nixosModules.common
-              ({pkgs, lib, ...}: {
+              ({
+                pkgs,
+                lib,
+                ...
+              }: {
                 nixpkgs.hostPlatform = "x86_64-linux";
                 users.users.nixos.openssh.authorizedKeys.keys = [
                   "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHBdCFoasNYvWwXHCiXamRIdiQCJK21lmxv5rGLPsB3v kohana@YunagiTown"
@@ -311,7 +287,7 @@
         # All nixos/nix-darwin configurations are kept here.
         nixosModules = {
           # Common nixos/nix-darwin configuration shared between Linux and macOS.
-          common = {pkgs, self, ...}: {
+          common = {...}: {
             # Allow unfree packages
             nixpkgs = {
               config = {
@@ -344,18 +320,14 @@
               ./etc/globalvars.nix
               ./etc/sshconf.nix
             ];
-
           };
         };
       };
 
       perSystem = {
         pkgs,
-        self',
         system,
-        lib,
         config,
-        inputs',
         ...
       }: {
         treefmt = {
