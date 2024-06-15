@@ -104,6 +104,50 @@
     };
     # Use podman instead of docker
     oci-containers.backend = "podman";
+    arion = {
+      backend = "podman-socket";
+      projects.ollama.settings = {
+        project.name = "ollama";
+        networks = {
+          default = {
+            name = "ollama";
+            ipam = {
+              config = [{subnet = "172.26.0.0/16";}];
+            };
+          };
+        };
+
+        services.ollama = {
+          out.service = {
+            deploy.resources.reservations.devices = [
+              {
+                driver = "nvidia";
+                count = 1;
+                capabilities = ["gpu"];
+              }
+            ];
+          };
+          service = {
+            image = "ollama/ollama:latest";
+            container_name = "ollama";
+            environment = {
+              OLLAMA_ORIGINS = "*"; # allow requests from any origins
+              HSA_OVERRIDE_GFX_VERSION = "10.3.0";
+            };
+            volumes = ["/home/${username}/ollama:/root/.ollama"];
+            restart = "unless-stopped";
+            ports = [
+              "11451:11434"
+            ];
+            labels."io.containers.autoupdate" = "registry";
+          };
+        };
+      };
+    };
+  };
+  systemd.services.arion-ollama = {
+    wants = ["network-online.target"];
+    after = ["network-online.target"];
   };
 
   services.resolved = {
@@ -187,6 +231,11 @@
       };
     };
   };
+  networking.firewall.extraCommands = ''
+      iptables -A INPUT -p tcp --destination-port 53 -s 172.26.0.0/16 -j ACCEPT
+      iptables -A INPUT -p udp --destination-port 53 -s 172.26.0.0/16 -j ACCEPT
+    '';
+  };
 
   systemd.targets.sleep.enable = false;
   systemd.targets.suspend.enable = false;
@@ -194,7 +243,7 @@
   systemd.targets.hybrid-sleep.enable = false;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 7860 ];
+  networking.firewall.allowedTCPPorts = [ 7860 11451 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
