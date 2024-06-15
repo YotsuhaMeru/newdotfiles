@@ -124,7 +124,7 @@ in {
       role = "client";
       settings = {
         common = {
-          server_addr = "192.168.0.134";
+          server_addr = "192.168.0.185";
           server_port = 7154;
         };
         proxies = {
