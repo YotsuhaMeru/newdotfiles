@@ -137,7 +137,7 @@
             volumes = ["/home/${username}/ollama:/root/.ollama"];
             restart = "unless-stopped";
             ports = [
-              "11451:11434"
+              "127.0.0.1:11451:11434"
             ];
             labels."io.containers.autoupdate" = "registry";
           };
@@ -157,6 +157,24 @@
       ReadEtcHosts=false
       MulticastDNS=true
     '';
+  };
+
+  services.frp = {
+    enable = true;
+    role = "client";
+    settings = {
+      common = {
+        server_addr = "192.168.0.134";
+        server_port = 7154;
+      };
+      proxies = {
+        name = "ollama";
+        type = "tcp";
+        local_ip = "127.0.0.1";
+        local_port = 11451;
+        remote_port = 11451;
+      };
+    };
   };
 
   networking.networkmanager = {
