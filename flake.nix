@@ -23,6 +23,10 @@
       url = "github:nix-community/nix-index-database";
       inputs.nixpkgs.follows = "/nixos-unstable";
     };
+    arion = {
+      url = "github:hercules-ci/arion";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     deploy-rs.url = "github:serokell/deploy-rs";
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixos-flake.url = "github:srid/nixos-flake";
@@ -248,6 +252,7 @@
               ./hosts/ShirosuzuGakuen/hardware-configuration.nix
               ./etc/windows.nix
               inputs.home-manager.nixosModules.home-manager
+              inputs.arion.nixosModules.arion
               (_: {
                 home-manager.users."minato" = {
                   imports = [
