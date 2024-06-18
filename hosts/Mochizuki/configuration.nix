@@ -8,8 +8,10 @@ in {
   services = {
     xserver = {
       # Configure keymap in X11
-      layout = "jp";
-      xkbVariant = "";
+      xkb = {
+        layout = "jp";
+        variant = "";
+      };
       # Enable the X11 windowing system.
       enable = true;
       displayManager.gdm.autoSuspend = false;
