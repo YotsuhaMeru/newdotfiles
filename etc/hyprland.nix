@@ -9,7 +9,7 @@
 
     dbus.enable = true;
 
-    xserver.displayManager = {
+    displayManager = {
       sddm = {
         enable = true;
         enableHidpi = false;
