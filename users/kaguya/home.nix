@@ -1,11 +1,8 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   home = {
     username = "kaguya";
     homeDirectory = "/home/kaguya";
+    stateVersion = "23.05";
   };
 
   nixpkgs.config = {
@@ -38,6 +35,4 @@
     };
     home-manager.enable = true;
   };
-
-  home.stateVersion = "23.05";
 }
