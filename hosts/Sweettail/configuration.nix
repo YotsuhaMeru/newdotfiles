@@ -45,7 +45,7 @@ in {
       };
     };
     # Enable the OpenSSH daemon.
-    services.openssh = {
+    openssh = {
       enable = true;
       settings = {
         PasswordAuthentication = false;
