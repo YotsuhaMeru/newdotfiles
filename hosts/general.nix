@@ -8,7 +8,7 @@
   # mdns service
   services.avahi = {
     enable = true;
-    nssmdns4 = true;
+    nssmdns = true; # replace with nssmdns4 option when updating legacy systems
     # publish/announce machine
     publish = {
       enable = true;
