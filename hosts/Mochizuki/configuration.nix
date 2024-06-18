@@ -87,8 +87,8 @@ in {
   systemd.targets = {
     sleep.enable = false;
     suspend.enable = false;
-    targets.hibernate.enable = false;
-    targets.hybrid-sleep.enable = false;
+    hibernate.enable = false;
+    hybrid-sleep.enable = false;
   };
 
   # This value determines the NixOS release from which the default
