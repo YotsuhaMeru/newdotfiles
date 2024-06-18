@@ -218,7 +218,7 @@
           };
           # Desktop
           Mochizuki = inputs.nixos-unstable.lib.nixosSystem {
-            nixpkgs.hostPlatform = "x86_64-linux";
+            system = "x86_64-linux";
             modules = [
               self.nixosModules.common
               ./etc/fonts.nix
