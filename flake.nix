@@ -217,7 +217,7 @@
             ];
           };
           # Desktop
-          Mochizuki = self.nixos-unstable.lib.nixosSystem {
+          Mochizuki = inputs.nixos-unstable.lib.nixosSystem {
             nixpkgs.hostPlatform = "x86_64-linux";
             modules = [
               self.nixosModules.common
