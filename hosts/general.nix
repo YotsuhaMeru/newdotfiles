@@ -8,7 +8,7 @@
   # mdns service
   services.avahi = {
     enable = true;
-    nssmdns = true;
+    nssmdns4 = true;
     # publish/announce machine
     publish = {
       enable = true;

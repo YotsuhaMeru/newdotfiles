@@ -35,7 +35,7 @@ in {
   services = {
     xserver = {
       enable = true;
-      layout = "jp";
+      xkb.layout = "jp";
       videoDrivers = ["intel"];
       deviceSection = ''
         Option "DRI" "3"
