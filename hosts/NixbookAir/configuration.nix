@@ -1,10 +1,14 @@
 {
-  config,
   pkgs,
+  inputs,
   ...
 }: let
   hostname = "NixbookAir";
   username = "merutan1392";
+  latestPkgs = import inputs.latest {
+    system = pkgs.system;
+    config.allowUnfree = true;
+  };
 in {
   boot = {
     # Use the systemd-boot EFI boot loader.
@@ -114,7 +118,7 @@ in {
     yt-dlp
     softether
     blueman
-    unityhub
+    latestPkgs.unityhub
   ];
 
   programs.steam = {

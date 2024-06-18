@@ -5,6 +5,7 @@
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/release-23.11";
     nixos-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    latest.url = "github:nixos/nixpkgs";
     hyprland.url = "github:hyprwm/Hyprland";
     home-manager = {
       url = "github:nix-community/home-manager/release-23.11";
@@ -175,6 +176,12 @@
           # MBA
           NixbookAir = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";
+            specialArgs = {
+              inherit
+                self
+                inputs
+                ;
+            };
             modules = [
               self.nixosModules.common
               ./etc/fonts.nix
@@ -274,9 +281,7 @@
                 ...
               }: {
                 nixpkgs.hostPlatform = "x86_64-linux";
-                users.users.nixos.openssh.authorizedKeys.keys = [
-                  "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHBdCFoasNYvWwXHCiXamRIdiQCJK21lmxv5rGLPsB3v kohana@YunagiTown"
-                ];
+                var.username = "nixos";
                 zramSwap = {
                   enable = true;
                   memoryPercent = 100;

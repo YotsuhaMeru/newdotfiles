@@ -382,6 +382,21 @@
         "type": "github"
       }
     },
+    "latest": {
+      "locked": {
+        "lastModified": 1718728470,
+        "narHash": "sha256-CVhlm+8IPNjOtrmqBWpKdqISUEEGHdvyehD74NzrAmc=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "d41a3935fd596d6987de2a1cf38efda24311fe07",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixindb-stable": {
       "inputs": {
         "nixpkgs": [
@@ -592,6 +607,7 @@
         "home-manager": "home-manager",
         "home-manager-unstable": "home-manager-unstable",
         "hyprland": "hyprland",
+        "latest": "latest",
         "nixindb-stable": "nixindb-stable",
         "nixindb-unstable": "nixindb-unstable",
         "nixos-flake": "nixos-flake",
