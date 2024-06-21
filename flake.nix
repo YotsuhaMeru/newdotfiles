@@ -30,7 +30,6 @@
     };
     deploy-rs.url = "github:serokell/deploy-rs";
     flake-parts.url = "github:hercules-ci/flake-parts";
-    nixos-flake.url = "github:srid/nixos-flake";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     devshell.url = "github:numtide/devshell";
     disko.url = "github:nix-community/disko";
@@ -40,7 +39,6 @@
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux"];
       imports = [
-        inputs.nixos-flake.flakeModule
         inputs.treefmt-nix.flakeModule
         inputs.devshell.flakeModule
         ./hosts/deploy.nix
@@ -49,9 +47,9 @@
       flake = {
         nixosConfigurations = {
           # Central Server
-          Folkroll = self.nixos-flake.lib.mkLinuxSystem {
-            nixpkgs.hostPlatform = "x86_64-linux";
-            imports = [
+          Folkroll = inputs.nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [
               self.nixosModules.common
               ./hosts/Folkroll/configuration.nix
               ./hosts/Folkroll/hardware-configuration.nix
@@ -91,9 +89,9 @@
             ];
           };
           # Chromebox
-          ChidamaGakuen = self.nixos-flake.lib.mkLinuxSystem {
-            nixpkgs.hostPlatform = "x86_64-linux";
-            imports = [
+          ChidamaGakuen = inputs.nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [
               self.nixosModules.common
               ./hosts/ChidamaGakuen
               inputs.disko.nixosModules.disko
@@ -251,9 +249,9 @@
             ];
           };
           # NAS Server
-          ShirosuzuGakuen = self.nixos-flake.lib.mkLinuxSystem {
-            nixpkgs.hostPlatform = "x86_64-linux";
-            imports = [
+          ShirosuzuGakuen = inputs.nixpkgs.lib.nixosSystem {
+            system = "x86_64-linux";
+            modules = [
               self.nixosModules.common
               ./hosts/ShirosuzuGakuen/configuration.nix
               ./hosts/ShirosuzuGakuen/hardware-configuration.nix
