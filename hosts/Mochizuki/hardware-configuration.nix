@@ -60,15 +60,10 @@
     bluetooth.enable = true;
     bluetooth.powerOnBoot = true;
 
-    opengl = {
-      enable = true;
-      driSupport = true;
-      driSupport32Bit = true;
-    };
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 
-  # Load nvidia driver for Xorg and Wayland
+  # Load amdgpu driver for Xorg and Wayland
   services.xserver.videoDrivers = ["amdgpu"];
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";

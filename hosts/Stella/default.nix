@@ -10,6 +10,14 @@ in {
   imports = [
     ./disko-config.nix
   ];
+  modules = {
+    distributedBuilds.enable = true;
+    fonts.enable = true;
+    hyprland.enable = true;
+    wine.enable = true;
+    pipewire.enable = true;
+    openssh.enable = true;
+  };
   networking = {
     hostName = hostname;
     networkmanager.enable = true;
@@ -29,7 +37,7 @@ in {
   hardware = {
     cpu.intel.updateMicrocode =
       lib.mkDefault config.hardware.enableRedistributableFirmware;
-    opengl.extraPackages = with pkgs; [
+    graphics.extraPackages = with pkgs; [
       (
         if (lib.versionOlder (lib.versions.majorMinor lib.version) "23.11")
         then vaapiIntel
@@ -51,14 +59,6 @@ in {
     VDPAU_DRIVER = lib.mkIf config.hardware.opengl.enable (lib.mkDefault "va_gl");
   };
   security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    audio.enable = true;
-    wireplumber.enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -68,11 +68,6 @@ in {
   ];
 
   programs.fish.enable = true;
-  services.openssh = {
-    enable = true;
-    settings.PermitRootLogin = "no";
-    settings.PasswordAuthentication = false;
-  };
 
   var.username = username;
   users.users.${username} = {

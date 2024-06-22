@@ -1,10 +1,11 @@
 {pkgs, ...}: {
   systemd.services = {
-    # Razubot
     RazuBot = {
       enable = true;
       description = "Discord bots(Razubot)";
       after = ["network-online.target"];
+      wants = ["network-online.target"];
+
       serviceConfig = {
         RestartSec = "1000ms";
         WorkingDirectory = "/srv/privdisbot/RazuBot-1/";
@@ -12,13 +13,14 @@
         Restart = "always";
         KillMode = "process";
       };
-      wantedBy = ["multi-user.target"];
     };
 
     MusicBot = {
       enable = true;
       description = "Discord bots(MusicBot)";
       after = ["network-online.target"];
+      wants = ["network-online.target"];
+
       path = [pkgs.ffmpeg-full pkgs.neofetch];
       serviceConfig = {
         RestartSec = "1000ms";
@@ -27,13 +29,14 @@
         Restart = "always";
         KillMode = "process";
       };
-      wantedBy = ["multi-user.target"];
     };
 
     kEnginePB = {
       enable = false;
       description = "Discord bots(kEnginePB)";
       after = ["network-online.target"];
+      wants = ["network-online.target"];
+
       serviceConfig = {
         RestartSec = "1000ms";
         WorkingDirectory = "/srv/privdisbot/kEnginePB/";
@@ -41,13 +44,14 @@
         Restart = "always";
         KillMode = "process";
       };
-      wantedBy = ["multi-user.target"];
     };
 
     eewBot = {
       enable = false;
       description = "Discord bots(eewBot)";
       after = ["network-online.target"];
+      wants = ["network-online.target"];
+
       serviceConfig = {
         RestartSec = "1000ms";
         WorkingDirectory = "/srv/privdisbot/fuckoffeew/";
@@ -55,13 +59,14 @@
         Restart = "always";
         KillMode = "process";
       };
-      wantedBy = ["multi-user.target"];
     };
 
     gomamayoBot = {
       enable = false;
       description = "Discord bots(gomamayoBot)";
       after = ["network-online.target"];
+      wants = ["network-online.target"];
+
       serviceConfig = {
         RestartSec = "1000ms";
         WorkingDirectory = "/srv/privdisbot/gomamayo/";
@@ -69,13 +74,13 @@
         Restart = "always";
         KillMode = "process";
       };
-      wantedBy = ["multi-user.target"];
     };
 
     GraybotCanary = {
       enable = true;
       description = "Discord bots(GraybotCanary)";
       after = ["network-online.target"];
+      wants = ["network-online.target"];
       serviceConfig = {
         RestartSec = "1000ms";
         WorkingDirectory = "/srv/privdisbot/GrayBot-Voice/";
@@ -83,12 +88,13 @@
         Restart = "always";
         KillMode = "process";
       };
-      wantedBy = ["multi-user.target"];
     };
     r-notify = {
       enable = true;
       description = "Discord bots(r-notify)";
       after = ["network-online.target"];
+      wants = ["network-online.target"];
+
       serviceConfig = {
         RestartSec = "1000ms";
         WorkingDirectory = "/srv/privdisbot/r-notify/";
@@ -96,7 +102,6 @@
         Restart = "always";
         KillMode = "process";
       };
-      wantedBy = ["multi-user.target"];
     };
   };
 }

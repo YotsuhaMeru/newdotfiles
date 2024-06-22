@@ -6,6 +6,9 @@
   hostname = "YunagiTown";
   username = "kohana";
 in {
+  modules = {
+    openssh.enable = true;
+  };
   imports = [
     ./disko-config.nix
   ];
@@ -37,14 +40,6 @@ in {
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   virtualisation.hypervGuest.enable = true;
-
-  services.openssh = {
-    enable = true;
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-    };
-  };
 
   var.username = username;
 

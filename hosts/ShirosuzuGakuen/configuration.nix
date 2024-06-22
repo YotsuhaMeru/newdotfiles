@@ -1,167 +1,22 @@
 {
   config,
   pkgs,
-  lib,
   ...
 }: let
   hostname = "ShirosuzuGakuen"; # Define your hostname.
   username = "minato";
 in {
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = "jp106";
-  };
-
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
-
-  hardware.nvidia = {
-    modesetting.enable = true;
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-    open = false;
-    nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.production;
-  };
-
-  systemd = {
-    services = {
-      SdBot = {
-        enable = false;
-        description = "Discord bots(sdbot)";
-        after = ["network-online.target"];
-        serviceConfig = {
-          RestartSec = "1000ms";
-          WorkingDirectory = "/srv/privdisbot/RazuBot-1/";
-          ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/RazuBot-1/index.js";
-          Restart = "always";
-          KillMode = "process";
-        };
-        wantedBy = ["multi-user.target"];
-      };
-      arion-ollama = {
-        wants = ["network-online.target"];
-        after = ["network-online.target"];
-      };
-    };
-    targets = {
-      sleep.enable = false;
-      suspend.enable = false;
-      hibernate.enable = false;
-      hybrid-sleep.enable = false;
-    };
-  };
-
-  var.username = username;
-  # Define a user account. Don't forget to set a password with passwd.
-  users.users = {
-    ${username} = {
-      isNormalUser = true;
-      description = "Asuka Minato";
-      extraGroups = ["wheel"]; # Enable `sudo` for the user.
-      shell = pkgs.fish;
-      openssh.authorizedKeys.keys = [
-        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDQEd6x7x71UyE0AQOF9Www22mUm/eScmL1zHkOUIYJP minato@ShirosuzuGakuen"
-      ];
-    };
-    hinata = {
-      isNormalUser = true;
-    };
-    yuzu = {
-      isNormalUser = true;
-    };
-  };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    firefox
-    gst_all_1.gstreamer
-    gst_all_1.gst-plugins-base
-    cudaPackages_12_1.cudatoolkit
-    nvtop
-    python3
-    screen
-    nodejs_18
-  ];
-
-  programs.fish.enable = true;
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  services = {
-    xserver.videoDrivers = ["nvidia"];
-
-    # Enable the OpenSSH daemon.
-    openssh = {
-      enable = true;
-      permitRootLogin = "no";
-      passwordAuthentication = false;
-    };
-    samba-wsdd.enable = true;
-    resolved = {
-      enable = true;
-      extraConfig = ''
-        LLMNR=false
-        ReadEtcHosts=false
-        MulticastDNS=true
-      '';
-    };
-
-    frp = {
-      enable = true;
-      role = "client";
-      settings = {
-        common = {
-          server_addr = "192.168.0.185";
-          server_port = 7154;
-        };
-        proxies = {
-          name = "ollama";
-          type = "tcp";
-          local_ip = "127.0.0.1";
-          local_port = 11451;
-          remote_port = 11451;
-        };
-      };
-    };
-
-    memcached = {
-      enable = true;
-      maxMemory = 128;
-    };
-
-    jellyfin.enable = true;
-
+  modules = {
+    windows.enable = true;
+    jisLayout.enable = true;
+    openssh.enable = true;
+    podman.enable = true;
+    ollama.enable = true;
+    graphics.enable = true;
+    disableSleep.enable = true;
     samba = {
-      enable = false;
-      securityType = "user";
-      extraConfig = ''
-        workgroup = WORKGROUP
-        server string = shirosuzugakuen
-        netbios name = shirosuzugakuen
-        security = user
-        usershare allow guests = no
-        restrict anonymous = 2
-        read raw = Yes
-        write raw = Yes
-        socket options = TCP_NODELAY IPTOS_LOWDELAY SO_RCVBUF=131072 SO_SNDBUF=131072
-        min receivefile size = 16384
-        use sendfile = true
-        aio read size = 16384
-        aio write size = 16384
-      '';
+      enable = true;
+      inherit username;
       shares = {
         kazari = {
           path = "/mnt/hdd/";
@@ -202,52 +57,92 @@ in {
       };
     };
   };
+  console = {
+    font = "Lat2-Terminus16";
+  };
 
-  virtualisation = {
-    podman = {
-      enable = true;
-      dockerCompat = true;
-      defaultNetwork.settings.dns_enabled = true;
-    };
-    # Use podman instead of docker
-    oci-containers.backend = "podman";
-    arion = {
-      backend = "podman-socket";
-      projects.ollama.settings = {
-        project.name = "ollama";
-        networks = {
-          default = {
-            name = "ollama";
-            ipam = {
-              config = [{subnet = "172.26.0.0/16";}];
-            };
-          };
-        };
-        services.ollama = {
-          out.service = {
-            deploy.resources.reservations.devices = lib.singleton {
-              driver = "nvidia";
-              count = 1;
-              capabilities = ["gpu"];
-            };
-          };
-          service = {
-            image = "ollama/ollama:latest";
-            container_name = "ollama";
-            environment = {
-              OLLAMA_ORIGINS = "*"; # allow requests from any origins
-              HSA_OVERRIDE_GFX_VERSION = "10.3.0";
-            };
-            volumes = ["/home/${username}/ollama:/root/.ollama"];
-            restart = "unless-stopped";
-            ports = [
-              "127.0.0.1:11451:11434"
-            ];
-            labels."io.containers.autoupdate" = "registry";
-          };
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    open = false;
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.production;
+  };
+
+  systemd = {
+    services = {
+      SdBot = {
+        enable = false;
+        description = "Discord bots(sdbot)";
+        after = ["network-online.target"];
+        wants = ["network-online.target"];
+
+        serviceConfig = {
+          RestartSec = "1000ms";
+          WorkingDirectory = "/srv/privdisbot/RazuBot-1/";
+          ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/RazuBot-1/index.js";
+          Restart = "always";
+          KillMode = "process";
         };
       };
     };
+  };
+
+  var.username = username;
+  # Define a user account. Don't forget to set a password with passwd.
+  users.users = {
+    ${username} = {
+      isNormalUser = true;
+      description = "Asuka Minato";
+      extraGroups = ["wheel"]; # Enable `sudo` for the user.
+      shell = pkgs.fish;
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDQEd6x7x71UyE0AQOF9Www22mUm/eScmL1zHkOUIYJP minato@ShirosuzuGakuen"
+      ];
+    };
+    hinata = {
+      isNormalUser = true;
+    };
+    yuzu = {
+      isNormalUser = true;
+    };
+  };
+
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    firefox
+    gst_all_1.gstreamer
+    gst_all_1.gst-plugins-base
+    cudaPackages_12_1.cudatoolkit
+    nvtopPackages.full
+    python3
+    screen
+    nodejs_18
+  ];
+
+  # List services that you want to enable:
+
+  services = {
+    xserver.videoDrivers = ["nvidia"];
+
+    # Enable the OpenSSH daemon.
+    resolved = {
+      enable = true;
+      extraConfig = ''
+        LLMNR=false
+        ReadEtcHosts=false
+        MulticastDNS=true
+      '';
+    };
+
+    memcached = {
+      enable = true;
+      maxMemory = 128;
+    };
+
+    jellyfin.enable = true;
   };
 
   networking = {

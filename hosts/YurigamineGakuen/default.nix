@@ -10,6 +10,15 @@ in {
   imports = [
     ./disko-config.nix
   ];
+  modules = {
+    distributedBuilds.enable = true;
+    fonts.enable = true;
+    hyprland.enable = true;
+    wine.enable = true;
+    pipewire.enable = true;
+    openssh.enable = true;
+    graphics.enable = true;
+  };
 
   boot = {
     initrd.availableKernelModules = ["xhci_pci" "usbhid" "usb_storage" "sd_mod" "sdhci_acpi"];
@@ -28,13 +37,10 @@ in {
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
     enableAllFirmware = true;
     enableRedistributableFirmware = true;
-    opengl = {
-      enable = true;
-      extraPackages = with pkgs; [
-        intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
-        libvdpau-va-gl
-      ];
-    };
+    graphics.extraPackages = with pkgs; [
+      intel-vaapi-driver # LIBVA_DRIVER_NAME=i965 (older but works better for Firefox/Chromium)
+      libvdpau-va-gl
+    ];
   };
 
   nixpkgs.config.packageOverrides = pkgs: {
@@ -54,19 +60,6 @@ in {
       };
     };
     firewall.enable = true;
-  };
-
-  services.openssh = {
-    enable = true;
-    settings.PermitRootLogin = "no";
-    settings.PasswordAuthentication = false;
-  };
-
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
   };
 
   var.username = username;

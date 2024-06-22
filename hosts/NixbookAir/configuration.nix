@@ -6,10 +6,20 @@
   hostname = "NixbookAir";
   username = "merutan1392";
   latestPkgs = import inputs.latest {
-    system = pkgs.system;
+    inherit (pkgs) system;
     config.allowUnfree = true;
   };
 in {
+  modules = {
+    fonts.enable = true;
+    hyprland.enable = true;
+    jisLayout = {
+      enable = true;
+      x11 = true;
+    };
+    pipewire.enable = true;
+    graphics.enable = true;
+  };
   boot = {
     # Use the systemd-boot EFI boot loader.
     loader = {
@@ -33,13 +43,11 @@ in {
 
   console = {
     font = "Lat2-Terminus16";
-    keyMap = "jp106";
   };
 
   services = {
     xserver = {
       enable = true;
-      xkb.layout = "jp";
       videoDrivers = ["intel"];
       deviceSection = ''
         Option "DRI" "3"
@@ -54,13 +62,6 @@ in {
         ];
       };
     };
-    pipewire = {
-      enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
-
     blueman.enable = true;
 
     openvpn = {
@@ -71,12 +72,6 @@ in {
   };
 
   sound.enable = true;
-
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
 
   var.username = username;
   users.users.${username} = {
@@ -109,7 +104,6 @@ in {
     ranger
     mpv
     swww
-    gnupg
     feh
     appimage-run
     python311

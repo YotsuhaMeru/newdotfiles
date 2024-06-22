@@ -3,12 +3,12 @@
   nixConfig.extra-experimental-features = "nix-command flakes";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-23.11";
+    nixpkgs.url = "github:nixos/nixpkgs/release-24.05";
     nixos-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     latest.url = "github:nixos/nixpkgs";
     hyprland.url = "github:hyprwm/Hyprland";
     home-manager = {
-      url = "github:nix-community/home-manager/release-23.11";
+      url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager-unstable = {
@@ -28,6 +28,10 @@
       url = "github:hercules-ci/arion";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-generators = {
+      url = "github:nix-community/nixos-generators";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     deploy-rs.url = "github:serokell/deploy-rs";
     flake-parts.url = "github:hercules-ci/flake-parts";
     treefmt-nix.url = "github:numtide/treefmt-nix";
@@ -35,7 +39,14 @@
     disko.url = "github:nix-community/disko";
   };
 
-  outputs = inputs @ {self, ...}:
+  outputs = inputs @ {self, ...}: let
+    specialArgs = {
+      inherit
+        self
+        inputs
+        ;
+    };
+  in
     inputs.flake-parts.lib.mkFlake {inherit inputs;} {
       systems = ["x86_64-linux"];
       imports = [
@@ -49,6 +60,7 @@
           # Central Server
           Folkroll = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
+            inherit specialArgs;
             modules = [
               self.nixosModules.common
               ./hosts/Folkroll/configuration.nix
@@ -62,7 +74,7 @@
                     # inputs.hyprland.homeManagerModules.default
                     # {wayland.windowManager.hyprland.enable = true;}
                     ./users/kori/home.nix
-                    ./etc/hmModules/starship.nix
+                    ./modules/hmModules/starship.nix
                     inputs.nixindb-stable.hmModules.nix-index
                   ];
                 };
@@ -72,6 +84,7 @@
           # Vultr
           YunagiTown = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";
+            inherit specialArgs;
             modules = [
               self.nixosModules.common
               ./hosts/YunagiTown/configuration.nix
@@ -81,7 +94,7 @@
                 home-manager.users."kohana" = {
                   imports = [
                     ./users/kohana/home.nix
-                    ./etc/hmModules/starship.nix
+                    ./modules/hmModules/starship.nix
                     inputs.nixindb-stable.hmModules.nix-index
                   ];
                 };
@@ -91,6 +104,7 @@
           # Chromebox
           ChidamaGakuen = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
+            inherit specialArgs;
             modules = [
               self.nixosModules.common
               ./hosts/ChidamaGakuen
@@ -100,14 +114,14 @@
                 home-manager.users."asumi" = {
                   imports = [
                     ./users/asumi/home.nix
-                    ./etc/hmModules/starship.nix
+                    ./modules/hmModules/starship.nix
                     inputs.nixindb-stable.hmModules.nix-index
                   ];
                 };
                 home-manager.users."hiyori" = {
                   imports = [
                     ./users/hiyori/home.nix
-                    ./etc/hmModules/starship.nix
+                    ./modules/hmModules/starship.nix
                     inputs.nixindb-stable.hmModules.nix-index
                   ];
                 };
@@ -117,12 +131,9 @@
           # ATrust mt182
           YurigamineGakuen = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";
+            inherit specialArgs;
             modules = [
               self.nixosModules.common
-              ./etc/fonts.nix
-              ./etc/distributedBuilds.nix
-              ./etc/wine.nix
-              ./etc/hyprland.nix
               ./hosts/YurigamineGakuen
               inputs.disko.nixosModules.disko
               inputs.home-manager-unstable.nixosModules.home-manager
@@ -132,9 +143,9 @@
                     ./users/ririko/home.nix
                     # from natsume
                     ./users/natsume/waybar.nix
-                    ./etc/hmModules/starship.nix
-                    ./etc/hmModules/ime.nix
-                    ./etc/hmModules/hyprland
+                    ./modules/hmModules/starship.nix
+                    ./modules/hmModules/ime.nix
+                    ./modules/hmModules/hyprland
                     # from kaguya
                     ./users/kaguya/hyprland
                     inputs.nixindb-unstable.hmModules.nix-index
@@ -146,12 +157,9 @@
           # x240
           Stella = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";
+            inherit specialArgs;
             modules = [
               self.nixosModules.common
-              ./etc/fonts.nix
-              ./etc/distributedBuilds.nix
-              ./etc/wine.nix
-              ./etc/hyprland.nix
               ./hosts/Stella
               inputs.disko.nixosModules.disko
               inputs.home-manager-unstable.nixosModules.home-manager
@@ -160,9 +168,9 @@
                   imports = [
                     ./users/natsume/home.nix
                     ./users/natsume/waybar.nix
-                    ./etc/hmModules/starship.nix
-                    ./etc/hmModules/ime.nix
-                    ./etc/hmModules/hyprland
+                    ./modules/hmModules/starship.nix
+                    ./modules/hmModules/ime.nix
+                    ./modules/hmModules/hyprland
                     # from kaguya
                     ./users/kaguya/hyprland
                     inputs.nixindb-unstable.hmModules.nix-index
@@ -174,16 +182,9 @@
           # MBA
           NixbookAir = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";
-            specialArgs = {
-              inherit
-                self
-                inputs
-                ;
-            };
+            inherit specialArgs;
             modules = [
               self.nixosModules.common
-              ./etc/fonts.nix
-              ./etc/hyprland.nix
               ./hosts/NixbookAir/configuration.nix
               ./hosts/NixbookAir/hardware-configuration.nix
               inputs.home-manager-unstable.nixosModules.home-manager
@@ -191,7 +192,7 @@
                 home-manager.users."merutan1392" = {
                   imports = [
                     ./users/merutan1392/home.nix
-                    ./etc/hmModules/starship.nix
+                    ./modules/hmModules/starship.nix
                     inputs.nixindb-unstable.hmModules.nix-index
                   ];
                 };
@@ -201,11 +202,9 @@
           # ThinClient Laptop
           Sweettail = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";
+            inherit specialArgs;
             modules = [
               self.nixosModules.common
-              ./etc/fonts.nix
-              ./etc/hyprland.nix
-              ./etc/distributedBuilds.nix
               ./hosts/Sweettail/configuration.nix
               ./hosts/Sweettail/hardware-configuration.nix
               inputs.home-manager-unstable.nixosModules.home-manager
@@ -213,7 +212,7 @@
                 home-manager.users."ichika" = {
                   imports = [
                     ./users/ichika/home.nix
-                    ./etc/hmModules/starship.nix
+                    ./modules/hmModules/starship.nix
                     ./users/ichika/hyprland
                     inputs.nixindb-unstable.hmModules.nix-index
                   ];
@@ -224,22 +223,19 @@
           # Desktop
           Mochizuki = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";
+            inherit specialArgs;
             modules = [
               self.nixosModules.common
-              ./etc/fonts.nix
-              ./etc/hyprland.nix
-              ./etc/wine.nix
-              ./etc/virtualization.nix
               ./hosts/Mochizuki/configuration.nix
               ./hosts/Mochizuki/hardware-configuration.nix
-              inputs.home-manager.nixosModules.home-manager
+              inputs.home-manager-unstable.nixosModules.home-manager
               (_: {
                 home-manager.users."kaguya" = {
                   imports = [
                     ./users/kaguya/home.nix
-                    ./etc/hmModules/starship.nix
-                    ./etc/hmModules/ime.nix
-                    ./etc/hmModules/hyprland
+                    ./modules/hmModules/starship.nix
+                    ./modules/hmModules/ime.nix
+                    ./modules/hmModules/hyprland
                     ./users/kaguya/waybar.nix
                     ./users/kaguya/hyprland
                     inputs.nixindb-unstable.hmModules.nix-index
@@ -251,18 +247,17 @@
           # NAS Server
           ShirosuzuGakuen = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
+            inherit specialArgs;
             modules = [
               self.nixosModules.common
               ./hosts/ShirosuzuGakuen/configuration.nix
               ./hosts/ShirosuzuGakuen/hardware-configuration.nix
-              ./etc/windows.nix
               inputs.home-manager.nixosModules.home-manager
-              inputs.arion.nixosModules.arion
               (_: {
                 home-manager.users."minato" = {
                   imports = [
                     ./users/minato/home.nix
-                    ./etc/hmModules/starship.nix
+                    ./modules/hmModules/starship.nix
                     inputs.nixindb-stable.hmModules.nix-index
                   ];
                 };
@@ -270,6 +265,7 @@
             ];
           };
           iso = inputs.nixos-unstable.lib.nixosSystem {
+            inherit specialArgs;
             modules = [
               "${inputs.nixos-unstable}/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix"
               self.nixosModules.common
@@ -325,8 +321,7 @@
             imports = [
               ./cachix
               ./hosts/general.nix
-              ./etc/globalvars.nix
-              ./etc/sshconf.nix
+              ./modules/nixosModules
             ];
           };
         };

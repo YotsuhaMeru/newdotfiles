@@ -2,16 +2,22 @@
   hostname = "Mochizuki"; # Define your hostname.
   username = "kaguya";
 in {
-  # Configure console keymap
-  console.keyMap = "jp106";
-
+  modules = {
+    fonts.enable = true;
+    hyprland.enable = true;
+    virtualisation.enable = true;
+    wine.enable = true;
+    jisLayout = {
+      enable = true;
+      x11 = true;
+    };
+    pipewire.enable = true;
+    openssh.enable = true;
+    disableSleep.enable = true;
+    graphics.enable = true;
+  };
   services = {
     xserver = {
-      # Configure keymap in X11
-      xkb = {
-        layout = "jp";
-        variant = "";
-      };
       # Enable the X11 windowing system.
       enable = true;
       displayManager.gdm.autoSuspend = false;
@@ -20,22 +26,6 @@ in {
       desktopManager.gnome.enable = true;
     };
     blueman.enable = true;
-    pipewire = {
-      enable = true;
-      audio.enable = true;
-      wireplumber.enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
-    openssh = {
-      enable = true;
-      settings = {
-        PasswordAuthentication = false;
-        KbdInteractiveAuthentication = false;
-        PermitRootLogin = "no";
-      };
-    };
   };
 
   hardware.pulseaudio.enable = false;
@@ -84,13 +74,6 @@ in {
       # allowedTCPPorts = [ ... ];
       # allowedUDPPorts = [ ... ];
     };
-  };
-
-  systemd.targets = {
-    sleep.enable = false;
-    suspend.enable = false;
-    hibernate.enable = false;
-    hybrid-sleep.enable = false;
   };
 
   # This value determines the NixOS release from which the default

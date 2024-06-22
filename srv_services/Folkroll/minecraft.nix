@@ -3,6 +3,8 @@
     enable = false;
     description = "Minecraft Direwolf Server";
     after = ["network-online.target"];
+    wants = ["network-online.target"];
+
     serviceConfig = {
       TimeoutStopSec = "240s";
       WorkingDirectory = "/srv/server/minecraft_direwolf";
@@ -10,6 +12,5 @@
       ExecStop = "/srv/server/minecraft_direwolf/stop.sh";
       Restart = "always";
     };
-    wantedBy = ["multi-user.target"];
   };
 }

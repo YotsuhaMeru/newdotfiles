@@ -2,127 +2,23 @@
   hostname = "Folkroll"; # Define your hostname
   username = "kori";
 in {
-  # Configure console keymap
-  console.keyMap = "jp106";
-
-  var.username = username;
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.${username} = {
-    isNormalUser = true;
-    description = "Miyohashi Kori";
-    extraGroups = ["networkmanager" "wheel" "video"];
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOqSrimj4asWCxAbiR5I2d7qRc4wTbnatyU55yg5Ih1x kori@Folkroll"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPEN4dIHBHXEpMJN954xil+8lPbcoFqWO5dVFnLVwzZ2"
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJvm29aFb1vnetFE991RDzawghS1T96ohKL6JlcxDo8V"
-    ];
-    packages = with pkgs; [];
-  };
-
-  nix.settings.trusted-users = ["ichika" "kori"];
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = with pkgs; [
-    openjdk17
-    nodejs_18
-    python3
-    gnumake
-    gcc
-    ffmpeg
-    libuuid
-    recfsusb2n
-    mirakurun
-    epgstation
-    gst_all_1.gst-plugins-base
-    gst_all_1.gstreamer
-  ];
-
-  environment = {
-    sessionVariables = {
-      LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [pkgs.libuuid];
-    };
-  };
-
-  programs = {
+  modules = {
+    mirakurun.enable = true;
+    epgstation.enable = true;
+    mysql.enable = true;
+    openssh.enable = true;
+    podman.enable = true;
+    disableSleep.enable = true;
+    cockpit.enable = true;
     hyprland.enable = true;
-    # Some programs need SUID wrappers, can be configured further or are
-    # started in user sessions.
-    mtr.enable = true;
-    gnupg.agent = {
+    jisLayout = {
       enable = true;
-      enableSSHSupport = true;
+      x11 = true;
     };
-  };
-
-  services = {
-    mysql = {
-      enable = true;
-      package = pkgs.mariadb;
-    };
-    # Enable the OpenSSH daemon.
-    openssh = {
-      enable = true;
-      settings = {
-        PasswordAuthentication = false;
-        KbdInteractiveAuthentication = false;
-        PermitRootLogin = "no";
-      };
-    };
-
-    xserver = {
-      enable = false;
-      displayManager = {
-        lightdm.enable = false;
-        defaultSession = "hyprland";
-        autoLogin.enable = true;
-        autoLogin.user = "kori";
-      };
-      layout = "jp";
-      xkbVariant = "";
-    };
-
-    cockpit = {
-      enable = true;
-    };
-
-    mirakurun = {
-      enable = true;
-      openFirewall = true;
-      tunerSettings = [
-        {
-          name = "KTV-FSUSB2N";
-          types = ["GR"];
-          command = "${pkgs.recfsusb2n}/bin/recfsusb2n -b25 <channel> - -";
-        }
-      ];
-    };
-    epgstation = {
-      enable = true;
-      openFirewall = true;
-      database.passwordFile = "/srv/key";
-      settings.mirakurunPath = "http://127.0.0.1:40772";
-    };
-    samba-wsdd.enable = true;
+    pipewire.enable = true;
     samba = {
       enable = true;
-      openFirewall = true;
-      securityType = "user";
-      extraConfig = ''
-        workgroup = WORKGROUP
-        server string = folkroll
-        netbios name = folkroll
-        security = user
-        usershare allow guests = no
-        restrict anonymous = 2
-        read raw = Yes
-        write raw = Yes
-        socket options = TCP_NODELAY IPTOS_LOWDELAY SO_RCVBUF=131072 SO_SNDBUF=131072
-        min receivefile size = 16384
-        use sendfile = true
-        aio read size = 16384
-        aio write size = 16384
-      '';
+      inherit username;
       shares = {
         kori = {
           path = "/home/kori";
@@ -171,23 +67,40 @@ in {
         };
       };
     };
-    pipewire = {
-      enable = true;
-      audio.enable = true;
-      alsa.enable = true;
-      alsa.support32Bit = true;
-      pulse.enable = true;
-    };
+  };
+  var.username = username;
+  # Define a user account. Don't forget to set a password with ‘passwd’.
+  users.users.${username} = {
+    isNormalUser = true;
+    description = "Miyohashi Kori";
+    extraGroups = ["networkmanager" "wheel" "video"];
+    openssh.authorizedKeys.keys = [
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOqSrimj4asWCxAbiR5I2d7qRc4wTbnatyU55yg5Ih1x kori@Folkroll"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPEN4dIHBHXEpMJN954xil+8lPbcoFqWO5dVFnLVwzZ2"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJvm29aFb1vnetFE991RDzawghS1T96ohKL6JlcxDo8V"
+    ];
   };
 
-  virtualisation = {
-    podman = {
-      enable = true;
-      dockerCompat = true;
-      defaultNetwork.settings.dns_enabled = true;
+  nix.settings.trusted-users = ["ichika" "kori"];
+
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    openjdk17
+    nodejs_18
+    python3
+    gnumake
+    gcc
+    ffmpeg
+    libuuid
+    gst_all_1.gst-plugins-base
+    gst_all_1.gstreamer
+  ];
+
+  environment = {
+    sessionVariables = {
+      LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath [pkgs.libuuid];
     };
-    # Use podman instead of docker
-    oci-containers.backend = "podman";
   };
 
   services.udev.extraRules = ''
@@ -195,13 +108,6 @@ in {
   '';
 
   security.rtkit.enable = true;
-
-  systemd.targets = {
-    sleep.enable = false;
-    suspend.enable = false;
-    hibernate.enable = false;
-    hybrid-sleep.enable = false;
-  };
 
   networking = {
     hostName = hostname;

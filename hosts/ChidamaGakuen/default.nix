@@ -7,6 +7,10 @@
   hostname = "ChidamaGakuen";
   username = "asumi";
 in {
+  modules = {
+    openssh.enable = true;
+    podman.enable = true;
+  };
   imports = [
     ./disko-config.nix
   ];
@@ -46,16 +50,10 @@ in {
     enableRedistributableFirmware = true;
   };
 
-  virtualisation.podman.enable = true;
   environment.systemPackages = with pkgs; [
     distrobox
   ];
   programs.fish.enable = true;
-  services.openssh = {
-    enable = true;
-    settings.PermitRootLogin = "no";
-    settings.PasswordAuthentication = false;
-  };
 
   var.username = username;
   users = {

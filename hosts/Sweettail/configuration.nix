@@ -5,21 +5,25 @@
   hostname = "Sweettail";
   username = "ichika";
 in {
+  modules = {
+    distributedBuilds.enable = true;
+    fonts.enable = true;
+    hyprland.enable = true;
+    jisLayout.enable = true;
+    openssh.enable = true;
+    graphics.enable = true;
+  };
   networking.hostName = hostname;
 
   console = {
     font = "Lat2-Terminus16";
-    keyMap = "jp106";
   };
 
   # Enable sound.
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
+  hardware.graphics = {
     extraPackages = with pkgs; [
       vaapiIntel
       vaapiVdpau
@@ -45,14 +49,6 @@ in {
       };
     };
     # Enable the OpenSSH daemon.
-    openssh = {
-      enable = true;
-      settings = {
-        PasswordAuthentication = false;
-        KbdInteractiveAuthentication = false;
-        PermitRootLogin = "no";
-      };
-    };
   };
 
   var.username = username;
@@ -75,16 +71,6 @@ in {
     wineWowPackages.staging
     moonlight-embedded
   ];
-
-  programs.fish.enable = true;
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  programs.gnupg.agent = {
-    enable = true;
-    enableSSHSupport = true;
-  };
 
   # List services that you want to enable:
 
