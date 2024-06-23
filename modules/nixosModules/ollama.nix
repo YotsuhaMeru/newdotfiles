@@ -30,6 +30,7 @@ in {
     services.ollama = {
       enable = true;
       acceleration = "cuda";
+      host = "0.0.0.0";
       environmentVariables = {
         OLLAMA_ORIGINS = "*"; # allow requests from any origins
       };
@@ -46,17 +47,11 @@ in {
         proxies = {
           name = "ollama";
           type = "tcp";
-          local_ip = "127.0.0.1";
+          local_ip = "0.0.0.0";
           local_port = 11434;
           remote_port = cfg.port;
         };
       };
-    };
-
-    systemd.services.arion-ollama = {
-      wants = ["network-online.target"];
-      after = ["network-online.target"];
-      wantedBy = ["multi-user.target"];
     };
   };
 }
