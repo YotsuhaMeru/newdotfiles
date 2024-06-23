@@ -5,6 +5,7 @@
       description = "Discord bots(Razubot)";
       after = ["network-online.target"];
       wants = ["network-online.target"];
+      wantedBy = ["multi-user.target"];
 
       serviceConfig = {
         RestartSec = "1000ms";
@@ -20,6 +21,7 @@
       description = "Discord bots(MusicBot)";
       after = ["network-online.target"];
       wants = ["network-online.target"];
+      wantedBy = ["multi-user.target"];
 
       path = [pkgs.ffmpeg-full pkgs.neofetch];
       serviceConfig = {
@@ -36,6 +38,7 @@
       description = "Discord bots(kEnginePB)";
       after = ["network-online.target"];
       wants = ["network-online.target"];
+      wantedBy = ["multi-user.target"];
 
       serviceConfig = {
         RestartSec = "1000ms";
@@ -51,6 +54,7 @@
       description = "Discord bots(eewBot)";
       after = ["network-online.target"];
       wants = ["network-online.target"];
+      wantedBy = ["multi-user.target"];
 
       serviceConfig = {
         RestartSec = "1000ms";
@@ -66,6 +70,7 @@
       description = "Discord bots(gomamayoBot)";
       after = ["network-online.target"];
       wants = ["network-online.target"];
+      wantedBy = ["multi-user.target"];
 
       serviceConfig = {
         RestartSec = "1000ms";
@@ -81,6 +86,8 @@
       description = "Discord bots(GraybotCanary)";
       after = ["network-online.target"];
       wants = ["network-online.target"];
+      wantedBy = ["multi-user.target"];
+
       serviceConfig = {
         RestartSec = "1000ms";
         WorkingDirectory = "/srv/privdisbot/GrayBot-Voice/";
@@ -94,6 +101,7 @@
       description = "Discord bots(r-notify)";
       after = ["network-online.target"];
       wants = ["network-online.target"];
+      wantedBy = ["multi-user.target"];
 
       serviceConfig = {
         RestartSec = "1000ms";

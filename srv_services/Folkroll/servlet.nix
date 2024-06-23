@@ -4,6 +4,7 @@
     description = "eewServlet";
     after = ["network-online.target"];
     wants = ["network-online.target"];
+    wantedBy = ["multi-user.target"];
 
     serviceConfig = {
       RestartSec = "1000ms";

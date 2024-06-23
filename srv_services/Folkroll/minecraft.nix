@@ -4,6 +4,7 @@
     description = "Minecraft Direwolf Server";
     after = ["network-online.target"];
     wants = ["network-online.target"];
+    wantedBy = ["multi-user.target"];
 
     serviceConfig = {
       TimeoutStopSec = "240s";
