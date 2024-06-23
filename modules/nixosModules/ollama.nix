@@ -29,6 +29,7 @@ in {
   };
   config = mkIf cfg.enable {
     modules.arion.enable = mkForce true;
+    virtualisation.containers.cdi.dynamic.nvidia.enable = true;
     virtualisation.arion = {
       projects.ollama.settings = {
         project.name = "ollama";
