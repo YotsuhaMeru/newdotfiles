@@ -18,6 +18,7 @@ in {
     pipewire.enable = true;
     samba = {
       enable = true;
+      openFirewall = true;
       inherit username;
       shares = {
         kori = {
@@ -113,6 +114,7 @@ in {
     hostName = hostname;
     firewall = {
       enable = true;
+      allowPing = true;
       # Open ports in the firewall.
       allowedTCPPorts = [80 443 40772];
       # allowedUDPPorts = [ ... ];
