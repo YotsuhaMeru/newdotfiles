@@ -18,7 +18,6 @@ in {
     pipewire.enable = true;
     samba = {
       enable = true;
-      openFirewall = true;
       inherit username;
       shares = {
         kori = {

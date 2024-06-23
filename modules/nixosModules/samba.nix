@@ -27,6 +27,7 @@ in {
       samba-wsdd.enable = true;
       samba = {
         enable = false;
+        openFirewall = true;
         securityType = "user";
         extraConfig = ''
           workgroup = WORKGROUP
