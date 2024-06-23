@@ -4,7 +4,6 @@
 {
   config,
   lib,
-  pkgs,
   modulesPath,
   ...
 }: {
@@ -12,22 +11,26 @@
     (modulesPath + "/installer/scan/not-detected.nix")
   ];
 
-  boot.initrd.availableKernelModules = ["xhci_pci" "nvme" "usbhid" "usb_storage" "sd_mod"];
-  boot.initrd.kernelModules = ["wl"];
-  boot.kernelModules = ["kvm-intel" "wl"];
-  boot.extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
+  boot = {
+    initrd.availableKernelModules = ["xhci_pci" "nvme" "usbhid" "usb_storage" "sd_mod"];
+    initrd.kernelModules = ["wl"];
+    kernelModules = ["kvm-intel" "wl"];
+    extraModulePackages = [config.boot.kernelPackages.broadcom_sta];
 
-  boot.kernel.sysctl = {
-    "dev.i915.perf_stream_paranoid" = 0;
+    kernel.sysctl = {
+      "dev.i915.perf_stream_paranoid" = 0;
+    };
   };
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/30d03e1c-caf3-4939-86e5-e7616d9bd7e4";
-    fsType = "xfs";
-  };
+  fileSystems = {
+    "/" = {
+      device = "/dev/disk/by-uuid/30d03e1c-caf3-4939-86e5-e7616d9bd7e4";
+      fsType = "xfs";
+    };
 
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/67E3-17ED";
-    fsType = "vfat";
+    "/boot" = {
+      device = "/dev/disk/by-uuid/67E3-17ED";
+      fsType = "vfat";
+    };
   };
 
   swapDevices = [
@@ -41,9 +44,11 @@
   networking.useDHCP = lib.mkDefault true;
   # networking.interfaces.ens9.useDHCP = lib.mkDefault true;
 
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.enableAllFirmware = true;
-  hardware.enableRedistributableFirmware = true;
+  hardware = {
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    enableAllFirmware = true;
+    enableRedistributableFirmware = true;
 
-  hardware.bluetooth.enable = true;
+    bluetooth.enable = true;
+  };
 }

@@ -1,51 +1,63 @@
-{config, lib, pkgs, ...}:
-
 {
+  config,
+  lib,
+  pkgs,
+  ...
+}: let
+  hostname = "ChidamaGakuen";
+  username = "asumi";
+in {
+  modules = {
+    openssh.enable = true;
+    podman.enable = true;
+  };
   imports = [
     ./disko-config.nix
   ];
 
-  networking.hostName = "ChidamaGakuen";
-  networking.useDHCP = lib.mkDefault true;
-  networking.networkmanager = {
-    enable = true;
-    connectionConfig = {
-      "connection.mdns" = 2;
-      "connection.llmnr" = 0;
+  networking = {
+    hostName = hostname;
+    useDHCP = lib.mkDefault true;
+    networkmanager = {
+      enable = true;
+      connectionConfig = {
+        "connection.mdns" = 2;
+        "connection.llmnr" = 0;
+      };
     };
-  };
-  networking.firewall.enable = true;
-
-  boot.loader = {
-    timeout = 0;
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
+    firewall.enable = true;
   };
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sdhci_pci" ];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = [ "kvm-intel" ];
-  boot.extraModulePackages = [];
+  boot = {
+    loader = {
+      timeout = 0;
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+
+    initrd = {
+      availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sdhci_pci"];
+      kernelModules = [];
+    };
+    kernelModules = ["kvm-intel"];
+    extraModulePackages = [];
+  };
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-  hardware.enableAllFirmware = true;
-  hardware.enableRedistributableFirmware = true;
+  hardware = {
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+    enableAllFirmware = true;
+    enableRedistributableFirmware = true;
+  };
 
-  virtualisation.podman.enable = true;
   environment.systemPackages = with pkgs; [
     distrobox
   ];
   programs.fish.enable = true;
-  services.openssh = {
-    enable = true;
-    settings.PermitRootLogin = "no";
-    settings.PasswordAuthentication = false;
-  };
 
-  var.username = "asumi";
+  var.username = username;
   users = {
-    users."asumi" = {
+    users.${username} = {
       isNormalUser = true;
       description = "Nishiki Asumi";
       extraGroups = ["wheel"];
@@ -68,6 +80,4 @@
   };
 
   system.stateVersion = "23.05";
-
-
 }

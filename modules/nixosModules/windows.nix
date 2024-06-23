@@ -11,7 +11,17 @@ with lib; let
   dataDir = "/var/lib/${app}";
   ipContainerNetwork = "10.89.53.1/24"; # choose an available network `ip a | grep podman`
   ipContainer1 = "10.89.53.11"; # manual networking is more reliable, trust me
+  cfg = config.modules.windows;
 in {
+  options = {
+    modules.windows = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+      };
+    };
+  };
+  config = mkIf cfg.enable {
     virtualisation.oci-containers.containers.${app} = {
       image = "docker.io/dockurr/windows:2.16"; # <https://hub.docker.com/r/dockurr/windows/tags>
       user = "root:root";
@@ -68,4 +78,5 @@ in {
       '';
       firewall.allowedTCPPorts = [5050 8006];
     };
+  };
 }

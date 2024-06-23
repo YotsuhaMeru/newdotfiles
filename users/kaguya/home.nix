@@ -1,11 +1,8 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   home = {
     username = "kaguya";
     homeDirectory = "/home/kaguya";
+    stateVersion = "23.05";
   };
 
   nixpkgs.config = {
@@ -17,25 +14,25 @@
     python3
     ripgrep
   ];
-  programs.fish.enable = true;
-  programs.emacs = {
-    enable = true;
-    package = pkgs.emacs29-pgtk;
-    extraPackages = epkgs: [
-      epkgs.vterm
-    ];
-  };
+  programs = {
+    fish.enable = true;
+    emacs = {
+      enable = true;
+      package = pkgs.emacs29-pgtk;
+      extraPackages = epkgs: [
+        epkgs.vterm
+      ];
+    };
 
-  programs.direnv = {
-    enable = true;
-    nix-direnv = {enable = true;};
-  };
+    direnv = {
+      enable = true;
+      nix-direnv = {enable = true;};
+    };
 
-  programs.nix-index = {
-    enable = true;
-    enableFishIntegration = true;
+    nix-index = {
+      enable = true;
+      enableFishIntegration = true;
+    };
+    home-manager.enable = true;
   };
-
-  home.stateVersion = "23.05";
-  programs.home-manager.enable = true;
 }

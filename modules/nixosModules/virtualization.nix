@@ -1,46 +1,60 @@
-{config, pkgs, lib, ...}:
-
 {
-
-  virtualisation = {
-    waydroid.enable = true;
-    lxd.enable = false;
-    libvirtd = {
-      enable = true;
-      onBoot = "ignore";
-      onShutdown = "shutdown";
-      qemu.ovmf.enable = true;
-      qemu.runAsRoot = true;
-    };
-  };
-
-  # Add binaries to path so that hooks can use it
-  systemd = {
-    services = {
-      libvirtd = {
-        path = let
-          env = pkgs.buildEnv {
-            name = "qemu-hook-env";
-            paths = with pkgs; [bash libvirt kmod systemd ripgrep sd];
-          };
-        in [env];
+  config,
+  lib,
+  pkgs,
+  ...
+}:
+with lib; let
+  cfg = config.modules.virtualisation;
+in {
+  options = {
+    modules.virtualisation = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
       };
-      pcscd.enable = false;
     };
-    sockets.pcscd.enable = false;
   };
+  config = mkIf cfg.enable {
+    virtualisation = {
+      waydroid.enable = true;
+      lxd.enable = false;
+      libvirtd = {
+        enable = true;
+        onBoot = "ignore";
+        onShutdown = "shutdown";
+        qemu.ovmf.enable = true;
+        qemu.runAsRoot = true;
+      };
+    };
 
-  # Link hooks to the correct directory
-  system.activationScripts.libvirt-hooks.text = ''
+    # Add binaries to path so that hooks can use it
+    systemd = {
+      services = {
+        libvirtd = {
+          path = let
+            env = pkgs.buildEnv {
+              name = "qemu-hook-env";
+              paths = with pkgs; [bash libvirt kmod systemd ripgrep sd];
+            };
+          in [env];
+        };
+        pcscd.enable = false;
+      };
+      sockets.pcscd.enable = false;
+    };
+
+    # Link hooks to the correct directory
+    system.activationScripts.libvirt-hooks.text = ''
       rm -rf /var/lib/libvirt/hooks/
       ln -Tsnf /etc/libvirt/hooks /var/lib/libvirt/hooks
     '';
 
-  environment = {
-    systemPackages = with pkgs; [virt-manager];
-    etc = {
-      "libvirt/hooks/qemu" = {
-        text = ''
+    environment = {
+      systemPackages = with pkgs; [virt-manager];
+      etc = {
+        "libvirt/hooks/qemu" = {
+          text = ''
             #!/run/current-system/sw/bin/bash
             #
             # Author: Sebastiaan Meijer (sebastiaan@passthroughpo.st)
@@ -75,19 +89,19 @@
                 done <<< "$(find -L "$HOOKPATH" -maxdepth 1 -type f -executable -print;)"
             fi
           '';
-        mode = "0755";
-      };
+          mode = "0755";
+        };
 
-      "libvirt/hooks/kvm.conf" = {
-        text = ''
+        "libvirt/hooks/kvm.conf" = {
+          text = ''
             VIRSH_GPU_VIDEO=pci_0000_0c_00_0
             VIRSH_GPU_AUDIO=pci_0000_0c_00_1
           '';
-        mode = "0755";
-      };
+          mode = "0755";
+        };
 
-      "libvirt/hooks/qemu.d/win/prepare/begin/start.sh" = {
-        text = ''
+        "libvirt/hooks/qemu.d/win/prepare/begin/start.sh" = {
+          text = ''
             #!/run/current-system/sw/bin/bash
 
             # Debugging
@@ -135,11 +149,11 @@
             modprobe vfio-pci
             modprobe vfio_iommu_type1
           '';
-        mode = "0755";
-      };
+          mode = "0755";
+        };
 
-      "libvirt/hooks/qemu.d/macos/release/end/stop.sh" = {
-        text = ''
+        "libvirt/hooks/qemu.d/macos/release/end/stop.sh" = {
+          text = ''
             #!/run/current-system/sw/bin/bash
 
             # Debugging
@@ -182,12 +196,12 @@
             systemctl set-property --runtime -- init.scope AllowedCPUs=0-7
 
           '';
-        mode = "0755";
+          mode = "0755";
+        };
       };
-    };
 
-    etc."gbinder.d/waydroid.conf".source =
-      lib.mkForce
+      etc."gbinder.d/waydroid.conf".source =
+        lib.mkForce
         (pkgs.writeText "waydroid.conf" ''
           [Protocol]
           /dev/binder = aidl3
@@ -202,15 +216,15 @@
           [General]
           ApiLevel = 30
         '');
-    etc."sysctl.d/90-max_map_count.conf".text = ''
+      etc."sysctl.d/90-max_map_count.conf".text = ''
         vm.max_map_count=1048576
       '';
-    etc."sysctl.d/90-vfs_cache_pressure.conf".text = ''
+      etc."sysctl.d/90-vfs_cache_pressure.conf".text = ''
         vm.vfs_cache_pressure = 10
       '';
+    };
+
+    boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
+    virtualisation.spiceUSBRedirection.enable = true;
   };
-
-  boot.kernel.sysctl."net.ipv4.ip_forward" = 1;
-  virtualisation.spiceUSBRedirection.enable = true;
-
 }

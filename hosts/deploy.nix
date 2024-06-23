@@ -21,7 +21,7 @@
             path = nixosConfig.pkgs.deploy-rs.lib.activate.nixos nixosConfig;
           };
         })
-          self.nixosConfigurations;
+        self.nixosConfigurations;
     };
 
     # This is highly advised, and will prevent many possible mistakes

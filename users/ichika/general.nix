@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+_: {
   wayland.windowManager.hyprland = {
     enable = true;
     extraConfig = ''
