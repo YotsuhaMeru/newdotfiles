@@ -30,7 +30,7 @@ in {
     services.ollama = {
       enable = true;
       acceleration = "cuda";
-      host = "0.0.0.0";
+      listenAddress = "0.0.0.0:11434";
       environmentVariables = {
         OLLAMA_ORIGINS = "*"; # allow requests from any origins
       };
