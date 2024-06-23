@@ -33,7 +33,6 @@ in {
       environmentVariables = {
         OLLAMA_ORIGINS = "*"; # allow requests from any origins
       };
-      port = cfg.port;
     };
 
     services.frp = {
@@ -48,7 +47,7 @@ in {
           name = "ollama";
           type = "tcp";
           local_ip = "127.0.0.1";
-          local_port = cfg.port;
+          local_port = 11434;
           remote_port = cfg.port;
         };
       };
