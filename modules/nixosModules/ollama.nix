@@ -5,7 +5,6 @@
 }:
 with lib; let
   cfg = config.modules.ollama;
-  ipSubnet = "172.26.0.0/16";
 in {
   options = {
     modules.ollama = {
@@ -28,43 +27,13 @@ in {
     };
   };
   config = mkIf cfg.enable {
-    modules.arion.enable = mkForce true;
-    virtualisation.containers.cdi.dynamic.nvidia.enable = true;
-    virtualisation.arion = {
-      projects.ollama.settings = {
-        project.name = "ollama";
-        networks = {
-          default = {
-            name = "ollama";
-            ipam = {
-              config = [{subnet = ipSubnet;}];
-            };
-          };
-        };
-        services.ollama = {
-          out.service = {
-            deploy.resources.reservations.devices = lib.singleton {
-              driver = "nvidia";
-              count = 1;
-              capabilities = ["gpu"];
-            };
-          };
-          service = {
-            image = "ollama/ollama:latest";
-            container_name = "ollama";
-            environment = {
-              OLLAMA_ORIGINS = "*"; # allow requests from any origins
-              HSA_OVERRIDE_GFX_VERSION = "10.3.0";
-            };
-            volumes = ["/home/${config.var.username}/ollama:/root/.ollama"];
-            restart = "unless-stopped";
-            ports = [
-              "${builtins.toString cfg.port}:11434"
-            ];
-            labels."io.containers.autoupdate" = "registry";
-          };
-        };
+    services.ollama = {
+      enable = true;
+      acceleration = "cuda";
+      environmentVariables = {
+        OLLAMA_ORIGINS = "*"; # allow requests from any origins
       };
+      port = cfg.port;
     };
 
     services.frp = {
