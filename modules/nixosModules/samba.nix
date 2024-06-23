@@ -26,7 +26,7 @@ in {
     services = {
       samba-wsdd.enable = true;
       samba = {
-        enable = false;
+        enable = true;
         openFirewall = true;
         securityType = "user";
         extraConfig = ''

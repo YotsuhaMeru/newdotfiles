@@ -15,7 +15,7 @@ in {
     graphics.enable = true;
     disableSleep.enable = true;
     samba = {
-      enable = true;
+      enable = false;
       inherit username;
       shares = {
         kazari = {
