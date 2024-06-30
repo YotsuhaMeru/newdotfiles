@@ -57,7 +57,7 @@
 
       flake = {
         nixosConfigurations = {
-          # Central Server
+          # Central Server (ChromeBox)
           Folkroll = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             inherit specialArgs;
@@ -101,7 +101,7 @@
               })
             ];
           };
-          # Chromebox
+          # Deskmini
           ChidamaGakuen = inputs.nixpkgs.lib.nixosSystem {
             system = "x86_64-linux";
             inherit specialArgs;

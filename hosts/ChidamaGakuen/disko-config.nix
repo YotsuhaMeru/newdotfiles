@@ -5,32 +5,28 @@
         device = "/dev/sda";
         type = "disk";
         content = {
-          type = "table";
-          format = "gpt";
-          partitions = [
-            {
-              name = "ESP";
-              start = "1MiB";
-              end = "500MiB";
-              bootable = true;
+          type = "gpt";
+          partitions = {
+            ESP = {
+              size = "512M";
+              type = "EF00";
+              priority = 1;
               content = {
                 type = "filesystem";
                 format = "vfat";
                 mountpoint = "/boot";
               };
-            }
-            {
-              name = "ChidamaGakuen";
-              start = "500MiB";
-              end = "100%";
-              part-type = "primary";
+            };
+            ChidamaGakuen = {
+              size = "100%";
+              priority = 2;
               content = {
                 type = "filesystem";
                 format = "xfs";
                 mountpoint = "/";
               };
-            }
-          ];
+            };
+          };
         };
       };
     };
