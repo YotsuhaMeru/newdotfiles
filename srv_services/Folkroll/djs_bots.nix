@@ -111,5 +111,20 @@
         KillMode = "process";
       };
     };
+    ipnotify = {
+      enable = true;
+      description = "Discord bots(ipnotify)";
+      after = ["network-online.target"];
+      wants = ["network-online.target"];
+      wantedBy = ["multi-user.target"];
+
+      serviceConfig = {
+        RestartSec = "1000ms";
+        WorkingDirectory = "/srv/privdisbot/ipnotify/";
+        ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/ipnotify/index.js";
+        Restart = "always";
+        KillMode = "process";
+      };
+    };
   };
 }

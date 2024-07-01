@@ -1,4 +1,6 @@
-{config, ...}: {
+{config, ...}: let
+  currentdomain = "cafe-setaria.net";
+in {
   services = {
     caddy = {
       enable = true;
@@ -6,10 +8,10 @@
         ":443".extraConfig = ''
           abort
         '';
-        "cafe-setaria.com".extraConfig = ''
+        ${currentdomain}.extraConfig = ''
           reverse_proxy http://127.0.0.1:8080
         '';
-        "redmine.cafe-setaria.com".extraConfig = ''
+        "redmine.${currentdomain}".extraConfig = ''
           reverse_proxy http://127.0.0.1:3000
         '';
       };
@@ -41,10 +43,10 @@
       recommendedProxySettings = true;
       recommendedTlsSettings = true;
       virtualHosts = {
-        "cafe-setaria.com" = {
+        ${currentdomain} = {
           addSSL = true;
           enableACME = true;
-          root = "/var/www/cafe-setaria.com";
+          root = "/var/www/${currentdomain}";
           locations."~ \\.php$".extraConfig = ''
             fastcgi_pass  unix:${config.services.phpfpm.pools.pool.socket};
             fastcgi_index index.php;
@@ -114,9 +116,9 @@
 
   security.acme = {
     acceptTerms = true;
-    defaults.email = "merutan1392s@gmail.com";
+    defaults.email = "yotsuhameru@gmail.com";
     certs = {
-      "cafe-setaria.com".email = "merutan1392s@gmail.com";
+      ${currentdomain}.email = "yotsuhameru@gmail.com";
     };
   };
 }
