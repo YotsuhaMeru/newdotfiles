@@ -41,7 +41,7 @@ in {
     environment.systemPackages = with pkgs; [
       pkgs.nur.repos.MtFBella109.catppuccin-mocha
       wofi
-      nautilus
+      gnome.nautilus
       kitty
       wl-clipboard
       grim
