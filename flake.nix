@@ -63,6 +63,7 @@
             inherit specialArgs;
             modules = [
               self.nixosModules.common
+              self.nixosModules.backports
               ./hosts/Folkroll/configuration.nix
               ./hosts/Folkroll/hardware-configuration.nix
               ./srv_services/Folkroll
@@ -107,6 +108,7 @@
             inherit specialArgs;
             modules = [
               self.nixosModules.common
+              self.nixosModules.backports
               ./hosts/ChidamaGakuen
               inputs.disko.nixosModules.disko
               inputs.home-manager.nixosModules.home-manager
@@ -245,7 +247,7 @@
             ];
           };
           # NAS Server
-          ShirosuzuGakuen = inputs.nixpkgs.lib.nixosSystem {
+          ShirosuzuGakuen = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";
             inherit specialArgs;
             modules = [
@@ -322,6 +324,15 @@
               ./cachix
               ./hosts/general.nix
               ./modules/nixosModules
+            ];
+          };
+          backports = {inputs, ...}: {
+            imports = [
+              # backport ollama from nixos-unstable
+              {
+                disabledModules = ["services/misc/ollama.nix"];
+              }
+              (inputs.nixos-unstable + "/nixos/modules/services/misc/ollama.nix")
             ];
           };
         };
