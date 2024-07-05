@@ -246,7 +246,7 @@
               })
             ];
           };
-          # NAS Server
+          # GPU Server
           ShirosuzuGakuen = inputs.nixos-unstable.lib.nixosSystem {
             system = "x86_64-linux";
             inherit specialArgs;
@@ -254,7 +254,7 @@
               self.nixosModules.common
               ./hosts/ShirosuzuGakuen/configuration.nix
               ./hosts/ShirosuzuGakuen/hardware-configuration.nix
-              inputs.home-manager.nixosModules.home-manager
+              inputs.home-manager-unstable.nixosModules.home-manager
               (_: {
                 home-manager.users."minato" = {
                   imports = [
