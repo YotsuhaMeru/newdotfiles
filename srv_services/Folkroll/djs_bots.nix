@@ -1,5 +1,5 @@
 {pkgs, ...}: {
-  systemd.services = {
+  systemd.user.services = {
     RazuBot = {
       enable = true;
       description = "Discord bots(Razubot)";

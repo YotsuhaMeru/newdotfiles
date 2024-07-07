@@ -74,6 +74,7 @@ in {
     isNormalUser = true;
     description = "Miyohashi Kori";
     extraGroups = ["networkmanager" "wheel" "video"];
+    initialPassword = "defaultpassword";
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOqSrimj4asWCxAbiR5I2d7qRc4wTbnatyU55yg5Ih1x kori@Folkroll"
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIPEN4dIHBHXEpMJN954xil+8lPbcoFqWO5dVFnLVwzZ2"
