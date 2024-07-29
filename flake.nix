@@ -66,7 +66,7 @@
               self.nixosModules.backports
               ./hosts/Folkroll/configuration.nix
               ./hosts/Folkroll/hardware-configuration.nix
-              ./srv_services/Folkroll
+              ./srv_services/Folkroll/nixosModules
               ./hosts/Folkroll/webservices.nix
               inputs.home-manager.nixosModules.home-manager
               (_: {
@@ -75,6 +75,7 @@
                     # inputs.hyprland.homeManagerModules.default
                     # {wayland.windowManager.hyprland.enable = true;}
                     ./users/kori/home.nix
+                    ./srv_services/Folkroll/hmModules
                     ./modules/hmModules/starship.nix
                     inputs.nixindb-stable.hmModules.nix-index
                   ];

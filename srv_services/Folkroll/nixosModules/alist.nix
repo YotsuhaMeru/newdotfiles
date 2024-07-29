@@ -13,6 +13,7 @@ _: {
     ];
     volumes = [
       "/var/lib/alist:/opt/alist/data"
+      "/mnt/hdd/SEGA_app_and_Game_Archive:/opt/alist/SEGAY"
     ];
     extraOptions = [
       # "--restart=unless-stopped"

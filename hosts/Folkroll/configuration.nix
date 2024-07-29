@@ -10,7 +10,6 @@ in {
     podman.enable = true;
     disableSleep.enable = true;
     cockpit.enable = true;
-    hyprland.enable = true;
     jisLayout = {
       enable = true;
       x11 = true;

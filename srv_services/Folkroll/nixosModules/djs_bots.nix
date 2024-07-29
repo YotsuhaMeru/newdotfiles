@@ -1,16 +1,19 @@
 {pkgs, ...}: {
-  systemd.user.services = {
+  systemd.services = {
     RazuBot = {
       enable = true;
       description = "Discord bots(Razubot)";
       after = ["network-online.target"];
       wants = ["network-online.target"];
       wantedBy = ["multi-user.target"];
+      startLimitIntervalSec = 3600;
+      startLimitBurst = 3;
 
       serviceConfig = {
         RestartSec = "1000ms";
         WorkingDirectory = "/srv/privdisbot/RazuBot-1/";
         ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/RazuBot-1/index.js";
+	User = "kori";
         Restart = "always";
         KillMode = "process";
       };
@@ -22,12 +25,15 @@
       after = ["network-online.target"];
       wants = ["network-online.target"];
       wantedBy = ["multi-user.target"];
+      startLimitIntervalSec = 3600;
+      startLimitBurst = 3;
 
-      path = [pkgs.ffmpeg-full pkgs.neofetch];
+      path = [pkgs.ffmpeg-full pkgs.fastfetch];
       serviceConfig = {
         RestartSec = "1000ms";
         WorkingDirectory = "/srv/privdisbot/Discord-Dejico-MusicBot/";
         ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/Discord-Dejico-MusicBot/index.js ${pkgs.ffmpeg-full}/bin/";
+	User = "kori";
         Restart = "always";
         KillMode = "process";
       };
@@ -39,27 +45,14 @@
       after = ["network-online.target"];
       wants = ["network-online.target"];
       wantedBy = ["multi-user.target"];
+      startLimitIntervalSec = 3600;
+      startLimitBurst = 3;
 
       serviceConfig = {
         RestartSec = "1000ms";
         WorkingDirectory = "/srv/privdisbot/kEnginePB/";
         ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/kEnginePB/index.mjs";
-        Restart = "always";
-        KillMode = "process";
-      };
-    };
-
-    eewBot = {
-      enable = false;
-      description = "Discord bots(eewBot)";
-      after = ["network-online.target"];
-      wants = ["network-online.target"];
-      wantedBy = ["multi-user.target"];
-
-      serviceConfig = {
-        RestartSec = "1000ms";
-        WorkingDirectory = "/srv/privdisbot/fuckoffeew/";
-        ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/fuckoffeew/index.js";
+	User = "kori";
         Restart = "always";
         KillMode = "process";
       };
@@ -71,11 +64,14 @@
       after = ["network-online.target"];
       wants = ["network-online.target"];
       wantedBy = ["multi-user.target"];
+      startLimitIntervalSec = 3600;
+      startLimitBurst = 3;
 
       serviceConfig = {
         RestartSec = "1000ms";
         WorkingDirectory = "/srv/privdisbot/gomamayo/";
         ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/gomamayo/index.js";
+	User = "kori";
         Restart = "always";
         KillMode = "process";
       };
@@ -92,6 +88,7 @@
         RestartSec = "1000ms";
         WorkingDirectory = "/srv/privdisbot/GrayBot-Voice/";
         ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/GrayBot-Voice/index.js";
+	User = "kori";
         Restart = "always";
         KillMode = "process";
       };
@@ -102,11 +99,14 @@
       after = ["network-online.target"];
       wants = ["network-online.target"];
       wantedBy = ["multi-user.target"];
+      startLimitIntervalSec = 3600;
+      startLimitBurst = 3;
 
       serviceConfig = {
         RestartSec = "1000ms";
         WorkingDirectory = "/srv/privdisbot/r-notify/";
         ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/r-notify/index.js";
+	User = "kori";
         Restart = "always";
         KillMode = "process";
       };
@@ -117,11 +117,14 @@
       after = ["network-online.target"];
       wants = ["network-online.target"];
       wantedBy = ["multi-user.target"];
+      startLimitIntervalSec = 3600;
+      startLimitBurst = 3;
 
       serviceConfig = {
         RestartSec = "1000ms";
         WorkingDirectory = "/srv/privdisbot/ipnotify/";
         ExecStart = "${pkgs.nodejs_18}/bin/node /srv/privdisbot/ipnotify/index.js";
+	User = "kori";
         Restart = "always";
         KillMode = "process";
       };
