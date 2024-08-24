@@ -18,7 +18,7 @@ in {
       };
       destAddr = mkOption {
         type = types.str;
-        default = "192.168.0.185";
+        default = "192.168.0.132";
       };
       destPort = mkOption {
         type = types.int;
