@@ -19,6 +19,7 @@ in {
     };
     pipewire.enable = true;
     graphics.enable = true;
+    distributedBuilds.enable = true;
   };
   boot = {
     # Use the systemd-boot EFI boot loader.
@@ -45,6 +46,12 @@ in {
     font = "Lat2-Terminus16";
   };
 
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.addons = [pkgs.fcitx5-mozc];
+    fcitx5.waylandFrontend = true;
+  };
+
   services = {
     xserver = {
       enable = true;
@@ -63,6 +70,7 @@ in {
       };
     };
     blueman.enable = true;
+    mbpfan.enable = true;
 
     openvpn = {
       servers = {
@@ -70,8 +78,6 @@ in {
       };
     };
   };
-
-  sound.enable = true;
 
   var.username = username;
   users.users.${username} = {

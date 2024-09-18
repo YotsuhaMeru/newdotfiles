@@ -25,17 +25,27 @@ in {
 
       displayManager = {
         sddm = {
-          enable = true;
+          enable = false;
           enableHidpi = false;
           autoNumlock = true;
           wayland.enable = true;
           theme = "catppuccin-mocha";
         };
         defaultSession = "hyprland";
-        autoLogin.user = config.var.username;
+        # autoLogin.user = config.var.username;
 
         sessionPackages = [pkgs.hyprland];
+
       };
+        greetd = {
+          enable = true;
+          settings = {
+            default_session = {
+              command = "${pkgs.greetd.tuigreet}/bin/tuigreet --remember --time --cmd Hyprland";
+              user = "${config.var.username}";
+            };
+          };
+        };
     };
 
     environment.systemPackages = with pkgs; [

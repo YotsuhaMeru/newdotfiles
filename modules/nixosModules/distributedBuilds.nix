@@ -28,7 +28,7 @@ in {
         }
       ];
 
-      settings.trusted-users = ["ichika" "kori" "kaguya"];
+      settings.trusted-users = ["ichika" "kori" "kaguya" "merutan1392"];
       distributedBuilds = true;
       extraOptions = ''
         builders-use-substitutes = true
