@@ -15,7 +15,7 @@
   boot = {
     loader.systemd-boot.enable = true;
     loader.efi.canTouchEfiVariables = true;
-    initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod"];
+    initrd.availableKernelModules = ["xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" "sr_mod" "aesni_intel" "cryptd"];
     initrd.kernelModules = ["amdgpu"];
     kernelModules = ["kvm-intel"];
     kernelParams = ["intel_iommu=on"];
@@ -25,27 +25,26 @@
     kernelPackages = pkgs.linuxPackages_latest;
   };
 
-  fileSystems = {
-    "/" = {
-      device = "/dev/disk/by-label/Mochizuki";
+  fileSystems."/" =
+    { device = "/dev/disk/by-uuid/40c851cc-274b-4d1c-84da-fdbf898b6658";
       fsType = "xfs";
     };
 
-    "/boot" = {
-      device = "/dev/disk/by-label/EFI";
+  boot.initrd.luks.devices."cryptroot".device = "/dev/disk/by-uuid/02be0869-43ed-4be0-b9f3-f1a9d0c0566f";
+
+  fileSystems."/boot" =
+    { device = "/dev/disk/by-uuid/D0F8-A11B";
       fsType = "vfat";
+      options = [ "fmask=0022" "dmask=0022" ];
     };
 
-    "/mnt/hdd" = {
-      device = "/dev/disk/by-label/Data";
-      fsType = "ntfs-3g";
-      options = ["rw"];
+    fileSystems."/mnt/hdd" = 
+      { device = "/dev/disk/by-label/Data";
+        fsType = "ntfs-3g";
+        options = ["rw"];
     };
-  };
 
-  swapDevices = [
-    #  {device = "/dev/disk/by-uuid/f80b8840-b6af-4b3f-9967-da937ecf71bc";}
-  ];
+  swapDevices = [ ];
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
